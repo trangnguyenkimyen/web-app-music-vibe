@@ -1,0 +1,330 @@
+.modal {
+    z-index: 4600 !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .wrapper-img {
+        max-width: 80%;
+        height: 80vh;
+        position: relative;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .wrapper-icon {
+            height: 30px;
+            width: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgb(11, 11, 11);
+            border-radius: 50%;
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            cursor: pointer;
+
+            .icon {
+                color: #cccccc;
+            }
+
+            &:hover {
+                background-color: rgb(18, 18, 18);
+
+                .icon {
+                    color: white;
+                }
+            }
+        }
+    }
+}
+
+.artist {
+    .artist-wrapper {
+        padding-bottom: 90px;
+
+        .artist-top {
+            margin-bottom: 30px;
+
+            .artist-background {
+                margin-bottom: 20px;
+                height: 44vh;
+                width: 100%;
+                position: relative;
+                border-radius: 50%;
+                box-shadow: 0 20px 100px var(--color);
+                transition: box-shadow 4s ease;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+            }
+
+            .artist-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 5px 40px;
+
+                .left {
+                    display: flex;
+                    align-items: center;
+
+                    .first {
+                        margin-right: 20px;
+
+                        .artist-avatar {
+                            width: 120px;
+                            aspect-ratio: 1;
+                            border-radius: 50%;
+                            overflow: hidden;
+
+                            img {
+                                width: 100%;
+                                height: 100%;
+                                object-fit: cover;
+                            }
+                        }
+                    }
+
+                    .second {
+                        .artist-name {
+                            font-weight: 600;
+                            font-size: 40px;
+                            margin-bottom: 10px;
+                        }
+
+                        .artist-listeners {
+                            font-weight: 500;
+                            font-size: 14px;
+                            color: #EFFE62;
+                        }
+                    }
+                }
+
+                .right {
+                    display: flex;
+                    align-items: center;
+
+                    .play-button {
+                        margin-right: 15px;
+                    }
+                }
+            }
+        }
+
+        .artist-bottom {
+            section {
+                &.popular-songs {
+                    margin-bottom: 30px;
+
+                    .title-section {
+                        padding-bottom: 15px;
+
+                        .title-text {
+                            font-weight: 600;
+                        }
+                    }
+                }
+
+                &.tabs {
+                    .tablist-box {
+                        position: sticky;
+                        top: 70px;
+                        z-index: 3;
+                        background-color: #010A19;
+
+                        .tablist {
+                            .MuiTabs-indicator {
+                                background-color: #EFFE62;
+                            }
+
+                            .tab {
+                                font-family: inherit;
+                                font-size: 14px;
+                                font-weight: 500;
+
+                                &:hover {
+                                    .MuiTouchRipple-root {
+                                        color: white;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    .tab-panels {
+                        // scroll-margin-block-start: 120px;
+
+                        .tab-panel {
+                            .title-section {
+                                padding-bottom: 15px;
+
+                                .title-text {
+                                    font-weight: 500;
+                                }
+                            }
+
+                            .cards {
+                                display: flex;
+                                flex-wrap: wrap;
+                                justify-content: flex-start;
+                                align-items: center;
+
+                                .wrapper-item {
+                                    width: 20%;
+
+                                    .item {
+                                        padding-bottom: 40px;
+                                        padding-right: 20px;
+                                    }
+                                }
+                            }
+
+                            .contents {
+                                margin-top: 20px;
+                            }
+
+                            &.fifth {
+                                .switch {
+                                    color: white;
+                                }
+
+                                .artist-img {
+                                    display: flex;
+                                    justify-content: center;
+                                    margin-bottom: 20px;
+
+                                    .carousel {
+                                        width: 100%;
+
+                                        .wrapper-img {
+                                            width: 100%;
+                                            height: 42vh;
+                                            background-color: black;
+                                            transition: scale .3s ease;
+
+                                            &:hover {
+                                                scale: 1.02;
+                                            }
+
+                                            img {
+                                                width: 100%;
+                                                height: 100%;
+                                                object-fit: contain;
+                                            }
+                                        }
+
+                                        .css-1abc02a,
+                                        .css-hn784z {
+                                            &:hover {
+                                                button {
+                                                    background-color: rgb(18, 18, 18);
+                                                    opacity: 1 !important;
+                                                }
+                                            }
+
+                                            .MuiButtonBase-root {
+                                                background-color: rgb(11, 11, 11);
+                                                color: #969696;
+
+                                                &:hover {
+                                                    color: white;
+                                                    opacity: 1 !important;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                .artist-info {
+                                    display: flex;
+
+                                    .artist-info-left {
+                                        flex: 3;
+
+                                        .wrapper-left {
+                                            padding: 10px;
+
+                                            section {
+                                                margin-bottom: 40px;
+
+                                                &:last-child {
+                                                    margin-bottom: 0;
+                                                }
+
+                                                .number {
+                                                    font-weight: 600;
+                                                    font-size: 32px;
+                                                    margin-bottom: 10px;
+                                                }
+
+                                                .title {
+                                                    font-weight: 500;
+                                                    font-size: 12px;
+                                                    color: #cccccc;
+                                                }
+
+                                                &.contact {
+                                                    div {
+                                                        margin-bottom: 12px;
+                                                        display: flex;
+                                                        align-items: center;
+                                                        cursor: pointer;
+
+                                                        .icon,
+                                                        .text {
+                                                            transition: color .1s ease;
+                                                        }
+
+                                                        .icon {
+                                                            margin-right: 5px;
+                                                            font-size: 22px;
+                                                            color: #969696;
+                                                        }
+
+                                                        .text {
+                                                            font-size: 12px;
+                                                            font-weight: 500;
+                                                            color: #cccccc;
+                                                        }
+
+                                                        &:hover {
+
+                                                            .icon,
+                                                            .text {
+                                                                color: white;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    .artist-info-right {
+                                        flex: 9;
+
+                                        .wrapper-right {
+                                            padding: 10px;
+                                            color: #cccccc;
+                                            font-weight: 400;
+                                            font-size: 15px;
+                                            line-height: 1.6;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

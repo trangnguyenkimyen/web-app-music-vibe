@@ -1,0 +1,159 @@
+.queue-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 8px;
+    border-radius: 3px;
+
+    .left {
+        margin-right: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+
+        .number {
+            font-size: 14px;
+            font-weight: 400;
+            color: #cccccc;
+            cursor: default;
+        }
+
+        .icon {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .play {
+            font-size: 24px;
+        }
+
+        .pause {
+            font-size: 22px;
+        }
+    }
+
+    .middle {
+        display: flex;
+        align-items: center;
+
+        .img-wrapper {
+            width: 32px;
+            height: 32px;
+            margin-right: 10px;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+
+        .song-info {
+            margin-right: 15px;
+            width: 120px;
+
+            .name {
+                font-size: 12px;
+                font-weight: 500;
+                margin-bottom: 3px;
+                cursor: pointer;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+
+            .artists {
+                font-size: 10px;
+                font-weight: 400;
+                color: #cccccc;
+                transition: color 0.1s ease;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+
+                span {
+                    cursor: pointer;
+
+                    &:not(.comma):hover {
+                        color: white;
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+    }
+
+    .right {
+        display: flex;
+        align-items: center;
+
+        .first {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin-right: 12px;
+
+            .text {
+                font-size: 11px;
+                font-weight: 400;
+                color: #cccccc;
+                cursor: default;
+            }
+
+            .icon {
+                position: absolute;
+                opacity: 0;
+            }
+        }
+
+        .second {
+            display: flex;
+            align-items: center;
+        }
+
+        .third {
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    .icon {
+        font-size: 18px;
+        color: #969696;
+        transition: color .1s ease;
+
+        &:hover {
+            color: white;
+        }
+    }
+}
+
+.queue-item:hover {
+    background-color: #96969650;
+
+    .left {
+        .number {
+            opacity: 0;
+        }
+
+        .icon {
+            opacity: 1;
+        }
+    }
+
+    .right {
+        .text {
+            opacity: 0;
+        }
+
+        .icon {
+            opacity: 1;
+        }
+    }
+}

@@ -1,0 +1,51 @@
+.music-wave {
+    position: absolute;
+
+    .loader {
+        height: 20px;
+        display: flex;
+        align-items: center;
+
+        .stroke {
+            display: block;
+            position: relative;
+            background-color: #EFFE62;
+            border: 1px solid #333333;
+            height: 100%;
+            width: 5px;
+            border-radius: 50px;
+            margin: 0 1px;
+            animation: animate 1.2s linear infinite;
+
+            &:nth-child(1) {
+                animation-delay: 0s;
+            }
+
+            &:nth-child(2) {
+                animation-delay: 0.3s;
+            }
+
+            &:nth-child(3) {
+                animation-delay: 0.6s;
+            }
+
+            &:nth-child(4) {
+                animation-delay: 0.3s;
+            }
+
+            &:nth-child(5) {
+                animation-delay: 0s;
+            }
+        }
+
+        @keyframes animate {
+            50% {
+                height: 20%;
+            }
+
+            100% {
+                height: 100%;
+            }
+        }
+    }
+}

@@ -1,0 +1,47 @@
+.app {
+    display: flex;
+
+    .app-wrapper {
+        flex: 10;
+        height: 100vh;
+        overflow-y: auto;
+        position: relative;
+
+        &::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background-color: transparent;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+            background-color: #96969686;
+        }
+
+        .chip {
+            background-color: #FFFFFF1A;
+            color: #F1F1F1;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 13px;
+            padding: 0 12px;
+            margin-right: 12px;
+            border-radius: 8px;
+
+            &.selected {
+                background-color: #EFFE62;
+                color: black;
+            }
+
+            &:not(.selected):hover {
+                background-color: rgba(255, 255, 255, 0.2);
+            }
+
+            .MuiChip-label {
+                padding: 0;
+            }
+        }
+    }
+}

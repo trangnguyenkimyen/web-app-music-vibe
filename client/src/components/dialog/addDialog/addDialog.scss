@@ -1,0 +1,160 @@
+.dialog {
+    .wrapper-dialog {
+        padding: 20px;
+        background-color: #333333;
+        color: white;
+
+        .dialog-top {
+            display: flex;
+            margin-bottom: 10px;
+            position: relative;
+            justify-content: center;
+
+            .title {
+                .text {
+                    font-weight: 600;
+                }
+            }
+
+            .icon {
+                position: absolute;
+                top: 0;
+                right: 0;
+                color: #969696;
+                cursor: pointer;
+                transition: color .1s ease;
+
+                &:hover {
+                    color: #cccccc;
+                }
+            }
+        }
+
+        .dialog-bottom {
+            display: flex;
+
+            .dialog-bottom-left {
+                flex: 4;
+
+                .wrapper-left {
+                    padding-right: 18px;
+                    position: relative;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    &:hover {
+                        .playlist-img {
+                            img {
+                                filter: brightness(0.8);
+                            }
+                        }
+
+                        .upload-button {
+                            color: white;
+                            border-color: white;
+                        }
+                    }
+
+                    .playlist-img {
+                        width: 100%;
+                        aspect-ratio: 1;
+                        border-radius: 10px;
+                        overflow: hidden;
+
+                        img {
+                            width: 100%;
+                            height: 100%;
+                            transition: filter .1s ease;
+                        }
+                    }
+
+                    .upload-button {
+                        position: absolute;
+                        border: 2px solid #cccccc;
+                        padding: 5px;
+                        color: #cccccc;
+                        font-size: 14px;
+                        font-weight: 500;
+                        cursor: pointer;
+                        transition: color .1s ease;
+                    }
+                }
+            }
+
+            .dialog-bottom-right {
+                flex: 8;
+                position: relative;
+
+                .wrapper-right {
+                    .form-group {
+                        margin-bottom: 20px;
+
+                        .form-label {
+                            font-size: 12px;
+                            font-weight: 500;
+                            font-family: inherit;
+                            color: white;
+                        }
+
+                        .form-input {
+                            color: white;
+                            font-size: 14px;
+                            font-weight: 500;
+                            font-family: inherit;
+                            width: 100%;
+
+                            &::before {
+                                border-bottom: 2px solid #cccccc;
+                            }
+
+                            &::after {
+                                border-bottom: 2px solid #EFFE62;
+                            }
+
+                            &.type {
+                                svg {
+                                    color: white;
+                                }
+
+                                option {
+                                    background-color: #333333;
+                                    font-size: 14px;
+                                    font-weight: 500;
+                                    padding: 5px;
+                                }
+                            }
+                        }
+                    }
+
+                    .save-button {
+                        position: absolute;
+                        right: 0;
+                        bottom: 0;
+                        background: none;
+                        border: 2px solid white;
+                        padding: 5px 25px;
+                        color: white;
+                        font-family: inherit;
+                        font-weight: 500;
+                        border-radius: 6px;
+                        cursor: pointer;
+
+                        &:not(:disabled):hover {
+                            border: 2px solid #EFFE62;
+                            background-color: #EFFE62;
+                            color: black;
+                            font-weight: 700;
+                        }
+
+                        &:disabled {
+                            color: #cccccc;
+                            border-color: #969696;
+                            cursor: default;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

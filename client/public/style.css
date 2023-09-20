@@ -1,0 +1,21 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #010A19;
+    font-family: 'Montserrat', sans-serif;
+    color: white;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+.MuiTooltip-tooltip {
+    background-color: rgb(58 57 57 / 92%) !important;
+    font-family: 'Montserrat', sans-serif !important;
+}

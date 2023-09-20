@@ -1,0 +1,38 @@
+.follow-button {
+    .wrapper {
+        padding: 8px;
+        border-radius: 50%;
+        background-color: #333333a4;
+        display: flex;
+        justify-content: center;
+        cursor: pointer;
+
+        .icon {
+            font-size: 22px;
+
+            &.unfollowed {
+                color: #cccccc;
+            }
+
+            &.followed {
+                color: #EFFE62;
+                opacity: 0.8;
+            }
+        }
+
+        &:hover {
+            background-color: #3f3f3fb3;
+            box-shadow: inset 1px 3px 4px #333333;
+
+            .icon {
+                &.unfollowed {
+                    color: white;
+                }
+
+                &.followed {
+                    opacity: 1;
+                }
+            }
+        }
+    }
+}

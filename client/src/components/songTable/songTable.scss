@@ -1,0 +1,83 @@
+.song-table {
+    padding: 10px;
+
+    .title {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        font-size: 13px;
+        font-weight: 500;
+        color: #cccccc;
+        padding: 0 5px 15px 5px;
+        border-bottom: 1px solid #96969650;
+        margin-bottom: 15px;
+
+        .number {
+            font-size: 1.2em;
+        }
+    }
+
+    .number {
+        flex: 0.5;
+        text-align: center;
+        margin-right: 10px;
+    }
+
+    .song-info {
+        margin-right: 15px;
+
+        &.playlist {
+            flex: 4;
+        }
+
+        &.album {
+            flex: 5.5;
+        }
+    }
+
+    .song-plays {
+        flex: 4;
+        text-align: right;
+        margin-right: 75px;
+    }
+
+    .song-album {
+        flex: 3.5;
+        margin-right: 15px;
+    }
+
+    .song-createdAt {
+        flex: 2;
+    }
+
+    .button {
+        flex: 0.5;
+
+        &.liked {
+            margin-right: 20px;
+        }
+    }
+
+    .song-duration {
+        flex: 1;
+        text-align: center;
+    }
+
+    .collapse-button {
+        margin: 10px 0 0;
+
+        .text {
+            font-size: 13px;
+            font-weight: 500;
+            color: #cccccc;
+            transition: all .1s ease;
+            padding: 0 10px;
+            cursor: default;
+
+            &:hover {
+                color: white;
+            }
+        }
+    }
+}
