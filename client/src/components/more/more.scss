@@ -1,0 +1,224 @@
+.more {
+    &:focus-within {
+        .button {
+            .more-icon {
+                color: white;
+            }
+        }
+    }
+
+    .button {
+        .more-icon {
+            font-size: 22px;
+            color: #969696;
+            transition: color .1s ease;
+        }
+
+        &:hover {
+            .more-icon {
+                color: white;
+            }
+        }
+    }
+
+    .popper-list {
+        z-index: 3333;
+
+        .list {
+            background-color: #333333;
+
+            .list-item {
+                color: white;
+                font-size: 12px;
+                font-weight: 500;
+                font-family: inherit;
+                padding: 8px 16px;
+
+                &:hover,
+                &:focus {
+                    background-color: #96969650;
+                }
+
+                &.playlist {
+                    &.is-open {
+                        background-color: #96969650;
+
+                        .more-icon {
+                            color: white;
+                        }
+                    }
+
+                    .more-icon {
+                        position: relative;
+                        right: -10px;
+                        font-size: 18px;
+                        transition: none;
+                    }
+                }
+            }
+        }
+    }
+
+    .divider {
+        border-color: #96969650;
+    }
+
+    .popper-playlists {
+        z-index: 3333;
+
+        .playlists {
+            background-color: #414040;
+
+            .playlist-item {
+                color: white;
+
+                &:hover,
+                &:focus {
+                    background-color: #96969650;
+
+                    .more-icon {
+                        color: white;
+                    }
+                }
+            }
+
+            .more-top {
+                display: flex;
+                flex-direction: column;
+                max-height: 200px;
+                overflow-y: auto;
+
+                .playlist-item {
+                    position: relative;
+                    padding-right: 25px;
+                    width: 100%;
+
+                    label {
+                        width: 100%;
+                    }
+
+                    .form-control {
+                        span {
+                            font-size: 12px;
+                            font-weight: 500;
+                            font-family: 'Montserrat', sans-serif;
+                        }
+
+                        .checkbox {
+                            color: white;
+                            padding: 0 10px 0 5px;
+
+                            &.Mui-checked {
+                                color: #EFFE62;
+                            }
+                        }
+                    }
+
+                    .more-icon {
+                        font-size: 14px;
+                        position: absolute;
+                        right: 10px;
+                    }
+
+                }
+            }
+
+            .more-bottom {
+                .divider {
+                    margin: 8px 0;
+                }
+
+                .playlist-item {
+                    font-size: 12px;
+                    font-weight: 500;
+                    font-family: inherit;
+                    padding-left: 8px;
+                    width: 100%;
+
+                    .more-icon {
+                        font-size: 22px;
+                        margin-right: 5px;
+                    }
+                }
+
+                .form-create-playlist {
+                    padding: 10px;
+
+                    .form-group {
+                        margin-bottom: 15px;
+
+                        .form-label {
+                            font-size: 12px;
+                            font-weight: 500;
+                            font-family: inherit;
+                            color: white;
+                        }
+
+                        .form-input {
+                            color: white;
+                            font-size: 14px;
+                            font-weight: 500;
+                            font-family: inherit;
+
+                            &::before {
+                                border-bottom: 2px solid #cccccc;
+                            }
+
+                            &::after {
+                                border-bottom: 2px solid #EFFE62;
+                            }
+
+                            &.type {
+                                width: 100%;
+
+                                svg {
+                                    color: white;
+                                }
+
+                                option {
+                                    background-color: #333333;
+                                    font-size: 14px;
+                                    font-weight: 500;
+                                    padding: 5px;
+                                }
+                            }
+                        }
+                    }
+
+                    .wrapper-button {
+                        width: 100%;
+                        display: flex;
+                        justify-content: flex-end;
+
+                        button {
+                            background: none;
+                            border: 2px solid white;
+                            color: white;
+                            font-size: 14px;
+                            font-weight: 500;
+                            padding: 6px 12px;
+                            border-radius: 3px;
+                            position: relative;
+                            left: 0;
+                            cursor: pointer;
+                            transition: all .1s ease;
+
+                            &:not(:disabled):hover {
+                                border: 2px solid #EFFE62;
+                                background-color: #EFFE62;
+                                color: black;
+                                font-weight: 700;
+                            }
+
+                            &:disabled {
+                                color: #cccccc;
+                                border-color: #969696;
+                                cursor: default;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

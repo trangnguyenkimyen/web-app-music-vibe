@@ -1,0 +1,218 @@
+.song-row {
+    display: flex;
+    align-items: center;
+    padding: 5px 5px;
+    border-radius: 3px;
+
+    &:focus,
+    &:focus-within,
+    &:hover {
+        background-color: #96969650;
+
+        .number {
+
+            .text,
+            .music-wave {
+                opacity: 0;
+            }
+
+            .icon {
+                opacity: 1;
+            }
+        }
+
+        .song-info {
+            .wrapper-text {
+                .artists {
+                    span:not(.comma) {
+                        color: white;
+                    }
+                }
+            }
+        }
+
+        .song-album,
+        .song-plays {
+            .text {
+                color: white;
+            }
+        }
+
+        .button {
+            .more {
+                opacity: 1;
+
+                .icon {
+                    color: white;
+                }
+            }
+
+            .icon {
+                &.liked {
+                    opacity: 1;
+                }
+            }
+        }
+    }
+
+    &:focus,
+    &:focus-within {
+        background-color: #9696968a;
+    }
+
+    .number {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+
+        .text {
+            font-size: 14px;
+            font-weight: 500;
+            color: #cccccc;
+        }
+
+        .icon {
+            position: absolute;
+            opacity: 0;
+            transition: scale .1s ease;
+
+            &.play {
+                font-size: 26px;
+            }
+
+            &:hover {
+                scale: 1.1;
+            }
+        }
+    }
+
+    .song-info {
+        display: flex;
+        align-items: center;
+        min-width: 0;
+
+        .wrapper-img {
+            min-width: 44px;
+            width: 44px;
+            height: 100%;
+            aspect-ratio: 1;
+            margin-right: 15px;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+
+        .wrapper-text {
+            min-width: 0;
+
+            .name {
+                font-size: 14px;
+                font-weight: 500;
+                margin-bottom: 5px;
+                cursor: pointer;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+
+                &.played {
+                    color: #EFFE62;
+                }
+            }
+
+            .artists {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+
+                span {
+                    cursor: pointer;
+                    font-size: 12px;
+                    font-weight: 500;
+                    color: #cccccc;
+
+                    &:not(.comma):hover {
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+    }
+
+    .song-album {
+        min-width: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        .text {
+            font-size: 13px;
+            font-weight: 500;
+            color: #cccccc;
+            cursor: pointer;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .song-createdAt {
+        font-size: 13px;
+        font-weight: 500;
+        color: #cccccc;
+    }
+
+    .song-plays {
+        font-size: 14px;
+        font-weight: 500;
+        color: #cccccc;
+    }
+
+    .song-duration {
+        font-size: 14px;
+        font-weight: 500;
+        color: #cccccc;
+    }
+
+    .button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .icon {
+            font-size: 20px;
+            cursor: pointer;
+
+            &.liked {
+                color: #969696;
+                transition: color .1s ease;
+                opacity: 0;
+
+                &:hover {
+                    color: white;
+                }
+            }
+
+            &.unliked {
+                color: #EFFE62;
+                opacity: 1;
+
+                &:hover {
+                    opacity: 0.8;
+                }
+            }
+        }
+
+        .more {
+            opacity: 0;
+        }
+    }
+}

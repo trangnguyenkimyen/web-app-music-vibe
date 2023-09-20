@@ -1,0 +1,41 @@
+.my-playlists {
+    .my-playlists-wrapper {
+        padding: 5px 15px 90px;
+
+        .add-button {
+            display: flex;
+            align-items: center;
+            background: none;
+            border: none;
+            font-family: inherit;
+            margin-bottom: 15px;
+            cursor: pointer;
+
+            &:hover {
+
+                .icon,
+                .text {
+                    color: #EFFE62;
+                }
+            }
+
+            .icon {
+                margin-right: 8px;
+                color: white;
+                transition: color .1s ease;
+            }
+
+            .text {
+                font-size: 14px;
+                font-weight: 500;
+                color: white;
+                transition: color .1s ease;
+            }
+        }
+
+        .playlists {
+            display: flex;
+            flex-wrap: wrap;
+        }
+    }
+}

@@ -1,0 +1,49 @@
+.dialog {
+    .wrapper-dialog {
+        padding: 20px;
+        background-color: #333333;
+        color: white;
+
+        .title {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .content {
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+
+        .buttons {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+
+            .button {
+                background: none;
+                padding: 5px 25px;
+                color: white;
+                font-family: inherit;
+                font-weight: 500;
+                border-radius: 6px;
+                cursor: pointer;
+
+                &.no {
+                    margin-right: 20px;
+                    border: 2px solid white;
+                }
+
+                &.yes {
+                    background-color: rgb(221, 47, 68);
+                    border: 2px solid rgb(221, 47, 68);
+                }
+
+                &:hover {
+                    opacity: 0.8;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,88 @@
+.home {
+    .title {
+        .title-text {
+            font-weight: 600;
+            cursor: pointer;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .home-wrapper {
+        padding: 5px 15px 90px;
+
+        .top {
+            display: flex;
+            margin-bottom: 40px;
+
+            .title {
+                margin-bottom: 12px;
+                display: flex;
+                align-items: center;
+
+                img {
+                    width: 40px;
+                }
+            }
+
+            .top-artists {
+                flex: 6.5;
+                margin-right: 25px;
+                min-width: 480px;
+            }
+
+            .top-songs {
+                flex: 5.5;
+                min-width: 400px;
+
+                .songs {
+                    height: 300px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                }
+            }
+        }
+
+        .bottom {
+            section {
+                margin-bottom: 45px;
+
+                .title {
+                    margin-bottom: 20px;
+                    display: flex;
+                    align-items: last baseline;
+                    justify-content: space-between;
+
+                    .more {
+                        font-size: 13px;
+                        font-weight: 600;
+                        color: #cccccc;
+                        cursor: pointer;
+                        padding-right: 20px;
+
+                        &:hover {
+                            text-decoration: underline;
+                        }
+                    }
+                }
+
+                .cards {
+                    display: flex;
+                    flex-wrap: wrap;
+                    align-items: center;
+
+                    .wrapper-item {
+                        width: 20%;
+
+                        .item {
+                            padding-right: 20px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
