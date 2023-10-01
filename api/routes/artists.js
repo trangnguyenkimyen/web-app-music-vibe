@@ -1,4 +1,4 @@
-const { createArtist, deleteArtist, updateArtist, getArtist, getAllArtists, getArtistAlbum, getArtistTopSongs, getRelatedArtists } = require("../controllers/artist");
+const { createArtist, deleteArtist, updateArtist, getArtist, getAllArtists, getArtistAlbum, getArtistTopSongs, getRelatedArtists, getPopularArtists } = require("../controllers/artist");
 const validLimit = require("../utils/validLimit");
 const validObjectId = require("../utils/validObjectId");
 const { verifyUser, verifyToken, verifyAdmin } = require("../utils/verifyToken");
@@ -24,5 +24,7 @@ router.get("/:id/albums", validObjectId, getArtistAlbum);
 router.get("/:id/top-songs", validObjectId, getArtistTopSongs);
 // Get artist's related artists
 router.get("/:id/related-artists", [validLimit, validObjectId], getRelatedArtists);
+// Get popular artists
+router.get("/top/popular", validLimit, getPopularArtists);
 
 module.exports = router;

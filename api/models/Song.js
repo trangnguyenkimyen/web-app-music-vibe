@@ -30,6 +30,12 @@ const SongSchema = new mongoose.Schema({
     },
     album: { type: objectId, ref: "Album" },
     artists: [{ type: objectId, ref: "Artist" }],
+    type: {
+        type: String,
+        required: true,
+        default: "song",
+        enum: ["song"]
+    }
 }, {
     timestamps: true,
 });

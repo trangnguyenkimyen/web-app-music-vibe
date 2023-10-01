@@ -96,7 +96,73 @@ const getAllSongs = async (req, res, next) => {
     } catch (err) {
         next(err);
     }
-}
+};
+
+// @desc    Get popular songs
+// @route   GET api/songs/top/popular
+const getPopularSongs = async (req, res, next) => {
+    try {
+        const limit = req.query.limit || 20;
+        const offset = req.query.offset || 0;
+
+        const songs = await Song.aggregate([
+            {
+                $lookup: {
+                    from: "albums",
+                    localField: "album",
+                    foreignField: "_id",
+                    as: "album"
+                }
+            },
+            {
+                $match: {
+                    "album.release_date": { $gte: new Date(new Date().setMonth(new Date().getMonth() - 12)) }
+                }
+            },
+            { $sort: { plays: -1 } },
+            { $skip: Number(offset) },
+            { $limit: Number(limit) },
+            { $project: { _id: 1, name: 1, } }
+        ]);
+
+        return res.status(200).json(songs);
+    } catch (err) {
+        next(err);
+    }
+};
+
+// @desc    Get new released songs
+// @route   GET api/songs/top/new-released
+const getNewReleasedSongs = async (req, res, next) => {
+    try {
+        const limit = req.query.limit || 20;
+        const offset = req.query.offset || 0;
+
+        const songs = await Song.aggregate([
+            {
+                $lookup: {
+                    from: "albums",
+                    localField: "album",
+                    foreignField: "_id",
+                    as: "album"
+                }
+            },
+            {
+                $match: {
+                    "album.release_date": { $gte: new Date(new Date().setMonth(new Date().getMonth() - 12)) }
+                }
+            },
+            { $sort: { "album.release_date": -1 } },
+            { $skip: Number(offset) },
+            { $limit: Number(limit) },
+            { $project: { _id: 1, name: 1, } }
+        ]);
+
+        return res.status(200).json(songs);
+    } catch (err) {
+        next(err);
+    }
+};
 
 // @desc    Delete a song by id
 // @route   DELETE api/songs/:id
@@ -124,6 +190,8 @@ module.exports = {
     createSong,
     getSong,
     getAllSongs,
+    getPopularSongs,
+    getNewReleasedSongs,
     updateSong,
     deleteSong,
 }

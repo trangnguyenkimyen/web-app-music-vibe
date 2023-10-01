@@ -5,6 +5,7 @@ const createError = require("../utils/error");
 const Playlist = require("../models/Playlist");
 const { use } = require("../routes/me");
 const Album = require("../models/Album");
+const { default: mongoose } = require("mongoose");
 
 // @desc    Get current user’s playlists
 // @route   GET api/me/playlists
@@ -199,6 +200,206 @@ const getCurrentlyPlayed = async (req, res, next) => {
     }
 }
 
+// @desc    Get personalized playlists
+// @route   GET api/me/peronalized-playlists
+const getPersonalizedPlaylists = async (req, res, next) => {
+    try {
+        const limit = req.query.limit || 20;
+        const offset = req.query.offset || 0;
+
+        let list = await User.aggregate([
+            { $match: { _id: new mongoose.Types.ObjectId(req.user.id) } },
+            { $unwind: "$currentlyPlaying" },
+            {
+                $group:
+                {
+                    _id: "$currentlyPlaying.itemId",
+                    currentlyPlaying: { $first: "$currentlyPlaying" }
+                }
+            },
+            { $replaceRoot: { newRoot: "$currentlyPlaying" } },
+            {
+                $match:
+                {
+                    type: "song",
+                    time: { $gte: new Date(new Date().setMonth(new Date().getMonth() - 6)) }
+                }
+            },
+            { $sort: { time: -1 } },
+            { $sample: { size: 50 } },
+            { $skip: Number(offset) },
+            { $limit: Number(limit) },
+        ]);
+
+        list = await Promise.all(
+            list.map(item => { return item.itemId })
+        )
+
+        res.status(200).json(list);
+    } catch (err) {
+        next(err);
+    }
+};
+
+// @desc    Get recommended artists
+// @route   GET api/me/recommended-artists
+const getRecommendedArtists = async (req, res, next) => {
+    try {
+        const limit = req.query.limit || 20;
+        const offset = req.query.offset || 0;
+
+        const user = await User.findById(req.user.id);
+        const likedSongs = user.likedSongs;
+
+        let albumIds = [];
+        let songIds = [];
+
+        let list = await User
+            .aggregate([
+                {
+                    $match: {
+                        _id: new mongoose.Types.ObjectId(req.user.id)
+                    }
+                },
+                { $project: { "likedSongs": 1, "albums": 1, "currentlyPlaying": 1 } },
+                { $unwind: "$currentlyPlaying" },
+                {
+                    $group: {
+                        _id: "$_id",
+                        likedSongs: { $first: "$likedSongs" },
+                        albums: { $first: "$albums" },
+                        currentlyPlaying: { $push: "$currentlyPlaying" },
+                    }
+                },
+                { $project: { "_id": 0 } },
+            ]);
+
+        albumIds = list[0].albums;
+        songIds = list[0].likedSongs;
+
+        const date = new Date(new Date().setMonth(new Date().getMonth() - 6));
+
+        list.map((listItem) => {
+            listItem.currentlyPlaying.map(currentItem => {
+                if (currentItem.time < date) {
+                    return;
+                }
+                if (currentItem.type === "song") {
+                    songIds.push(currentItem.itemId);
+                } else {
+                    albumIds.push(currentItem.itemId);
+                }
+            })
+        });
+
+        const albums = await Album.find({
+            _id: { $in: albumIds }
+        });
+
+        await Promise.all(
+            albums.map((album) => {
+                album.songs.map(song => {
+                    return songIds.push(song);
+                })
+            })
+        );
+
+        list = await Song.aggregate([
+            { $match: { _id: { $in: songIds, $nin: likedSongs } } },
+            { $sample: { size: 50 } },
+            { $skip: Number(offset) },
+            { $limit: Number(limit) },
+        ]);
+
+        list = await Promise.all(
+            list.map(item => {
+                return item.artists;
+            })
+        );
+
+        list = await list.flatMap(item => { return item });
+
+        list = await Artist.find({
+            _id: { $in: list },
+            followers: { $nin: req.user.id }
+        });
+
+        res.status(200).json(list);
+    } catch (err) {
+        next(err);
+    }
+};
+
+// @desc    Get recommended songs
+// @route   GET api/me/recommended-songs
+const getRecommendedSongs = async (req, res, next) => {
+    try {
+        const limit = req.query.limit || 20;
+        const offset = req.query.offset || 0;
+
+        const user = await User.findById(req.user.id);
+        const likedSongs = user.likedSongs;
+
+        let albumIds = [];
+        let songIds = [];
+
+        let list = await User
+            .aggregate([
+                { $match: { _id: new mongoose.Types.ObjectId(req.user.id) } },
+                { $project: { "albums": 1, "currentlyPlaying": 1 } },
+                { $unwind: "$currentlyPlaying" },
+                {
+                    $group: {
+                        _id: "$_id",
+                        albums: { $first: "$albums" },
+                        currentlyPlaying: { $push: "$currentlyPlaying" },
+                    }
+                },
+                { $project: { "_id": 0 } },
+            ]);
+
+        albumIds = list[0].albums;
+
+        const date = new Date(new Date().setMonth(new Date().getMonth() - 6));
+
+        list.map((listItem) => {
+            listItem.currentlyPlaying.map(currentItem => {
+                if (currentItem.time < date) {
+                    return;
+                }
+                if (currentItem.type === "song") {
+                    songIds.push(currentItem.itemId);
+                } else {
+                    albumIds.push(currentItem.itemId);
+                }
+            })
+        });
+
+        const albums = await Album.find({
+            _id: { $in: albumIds }
+        });
+
+        await Promise.all(
+            albums.map((album) => {
+                album.songs.map(song => {
+                    return songIds.push(song);
+                })
+            })
+        );
+
+        list = await Song.aggregate([
+            { $match: { _id: { $in: songIds, $nin: likedSongs } } },
+            { $sample: { size: 50 } },
+            { $skip: Number(offset) },
+            { $limit: Number(limit) },
+        ]);
+
+        res.status(200).json(list);
+    } catch (err) {
+        next(err);
+    }
+};
+
 // @desc    Follow/Unfollow playlist
 // @route   PUT api/me/playlists/:id
 const followPlaylist = async (req, res, next) => {
@@ -245,7 +446,7 @@ const followArtistUser = async (req, res, next) => {
             return next(createError(400, "You can not follow yourself"));
         }
         // If user has followed
-        if (curUser.followings.some(following => following.id === id)) {
+        if (curUser.followings.includes(id)) {
             // Unfollow
             await curUser.updateOne({
                 $pull: { followings: id }
@@ -276,7 +477,7 @@ const followArtistUser = async (req, res, next) => {
 }
 
 // @desc    Like song
-// @route   POST api/me/songs/:id
+// @route   PUT api/me/songs/:id
 const likeSong = async (req, res, next) => {
     try {
         const songId = req.params.id;
@@ -297,6 +498,41 @@ const likeSong = async (req, res, next) => {
     }
 }
 
+// @desc    Like album
+// @route   PUT api/me/albums/:id
+const likeAlbum = async (req, res, next) => {
+    try {
+        const albumId = req.params.id;
+        const user = await User.findById(req.user.id);
+        if (user.albums.includes(albumId)) {
+            await User.findByIdAndUpdate(req.user.id, {
+                $pull: { albums: req.params.id },
+            });
+            return res.status(200).json("Album unliked");
+        } else {
+            await User.findByIdAndUpdate(req.user.id, {
+                $push: { albums: req.params.id },
+            });
+            return res.status(200).json("Album liked");
+        }
+    } catch (err) {
+        next(err);
+    }
+};
+
+// @desc    Add currently played
+// @route   PUT api/me/currently-played/:id
+const addCurrentlyPlayed = async (req, res, next) => {
+    try {
+        const user = await User.findByIdAndUpdate(req.user.id, {
+            $push: { currentlyPlaying: { itemId: req.params.id, type: req.body.type } }
+        }, { new: true })
+        return res.status(200).json(user);
+    } catch (err) {
+        next(err);
+    }
+};
+
 module.exports = {
     getPlaylists,
     getProfile,
@@ -305,7 +541,12 @@ module.exports = {
     getLikedPlaylists,
     getLikedSongs,
     getCurrentlyPlayed,
+    getPersonalizedPlaylists,
+    getRecommendedArtists,
+    getRecommendedSongs,
     followPlaylist,
     followArtistUser,
     likeSong,
+    likeAlbum,
+    addCurrentlyPlayed
 }

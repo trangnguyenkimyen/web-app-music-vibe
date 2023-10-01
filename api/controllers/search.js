@@ -17,7 +17,7 @@ const searchForItems = async (req, res, next) => {
         let songs = [];
         let playlists = [];
         let profiles = [];
-        // q: album’s name, artist’s name, song’s name, genre, pllaylist's name, username
+        // q: album’s name, artist’s name, song’s name, genre, playlist's name, username
         const q = req.query.q;
         // type: album, artist, song, playlist, profile
         let type = req.query.type;

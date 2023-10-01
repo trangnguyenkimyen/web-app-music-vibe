@@ -18,7 +18,7 @@ const ArtistSchema = new mongoose.Schema({
     },
     images: [
         {
-            type: { type: String, default: "avatar" },
+            type: { type: String, default: "" },
             src: { type: String, default: "" },
         }
     ],
