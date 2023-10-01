@@ -44,11 +44,11 @@ const deleteArtist = async (req, res, next) => {
     }
 };
 
-// @desc    Get a artist by id  
+// @desc    Get an artist by id  
 // @route   GET api/artists/find/:id
 const getArtist = async (req, res, next) => {
     try {
-        const artist = await Artist.findById(req.params.id).populate("artists");
+        const artist = await Artist.findById(req.params.id);
         res.status(200).json(artist);
     } catch (err) {
         next(err);
@@ -175,7 +175,32 @@ const getRelatedArtists = async (req, res, next) => {
     }
 };
 
+// @desc    Get popular artists
+// @route   GET api/artists/top/popular
+const getPopularArtists = async (req, res, next) => {
+    try {
+        const limit = req.query.limit || 20;
+        const offset = req.query.offset || 0;
 
+        let artists = await Artist.aggregate([
+            { $unwind: "$followers" },
+            {
+                $group: {
+                    _id: "$_id",
+                    name: { "$first": "$name" },
+                    followersCount: { "$sum": 1 },
+                }
+            },
+            { $sort: { followersCount: -1 } },
+            { $skip: Number(offset) },
+            { $limit: Number(limit) }
+        ]);
+
+        return res.status(200).json(artists);
+    } catch (err) {
+        next(err);
+    }
+};
 
 module.exports = {
     createArtist,
@@ -186,4 +211,5 @@ module.exports = {
     getArtistAlbum,
     getArtistTopSongs,
     getRelatedArtists,
+    getPopularArtists,
 }

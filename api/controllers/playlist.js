@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const Album = require("../models/Album");
 const Playlist = require("../models/Playlist");
 const Song = require("../models/Song");
@@ -19,6 +20,31 @@ const createPlaylist = async (req, res, next) => {
         });
 
         res.status(200).json("Create successfully!");
+    } catch (err) {
+        next(err);
+    }
+};
+
+// @desc    Add songs to playlist  
+// @route   POST api/playlists/:id/songs
+const addSongsToPlaylist = async (req, res, next) => {
+    try {
+        const songIds = req.body.songIds;
+        if (songIds.length > 100) {
+            return next(createError(400, "Invalid request body"));
+        }
+
+        const playlist = await Playlist.findOneAndUpdate(
+            { _id: req.params.id, owner: req.user.id },
+            { $push: { songs: { $each: songIds } } },
+            { new: true }
+        );
+
+        if (!playlist) {
+            return next(createError(403, "You don't have authorized!"));
+        }
+
+        res.status(200).json(playlist);
     } catch (err) {
         next(err);
     }
@@ -63,7 +89,7 @@ const deletePlaylist = async (req, res, next) => {
     } catch (err) {
         next(err);
     }
-}
+};
 
 // @desc    Get a playlist by id  
 // @route   GET api/playlists/find/:id
@@ -142,13 +168,70 @@ const getPlaylistSongs = async (req, res, next) => {
     } catch (err) {
         next(err);
     }
-}
+};
+
+// @desc    Get popular playlists
+// @route   GET api/playlists/top/popular
+const getPopularPlaylists = async (req, res, next) => {
+    try {
+        const limit = req.query.limit || 20;
+        const offset = req.query.offset || 0;
+
+        const playlists = await Playlist.aggregate([
+            { $unwind: "$followers" },
+            {
+                $group: {
+                    _id: "$_id",
+                    name: { "$first": "$name" },
+                    followersCount: { "$sum": 1 },
+                }
+            },
+            { $sort: { followersCount: -1 } },
+            { $skip: Number(offset) },
+            { $limit: Number(limit) }
+        ]);
+
+        res.status(200).json(playlists);
+    } catch (err) {
+        next(err);
+    }
+};
+
+// @desc    Get playlists by category
+// @route   GET api/playlists/top/category?type=
+const getPlaylistByCategory = async (req, res, next) => {
+    try {
+        const limit = req.query.limit || 20;
+        const offset = req.query.offset || 0;
+
+        const type = req.query.type;
+        if (!type) {
+            return next(createError(400, "Invalid query type"));
+        }
+
+        const playlists = await Playlist
+            .find({
+                category: type
+            })
+            .skip(offset)
+            .limit(limit);
+
+        const total = playlists.length;
+
+        res.status(200).json({ total, playlists });
+    } catch (err) {
+        next(err);
+    }
+};
 
 module.exports = {
     createPlaylist,
     updatePlaylist,
+    addSongsToPlaylist,
     deletePlaylist,
     getPlaylist,
     getAllPlaylists,
     getPlaylistSongs,
+    getPopularPlaylists,
+    getPlaylistByCategory,
 }

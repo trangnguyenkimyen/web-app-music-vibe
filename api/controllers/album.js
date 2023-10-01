@@ -112,6 +112,41 @@ const getAlbumSongs = async (req, res, next) => {
     }
 };
 
+// @desc    Get popular albums
+// @route   GET api/albums/top/popular
+const getPopularAlbums = async (req, res, next) => {
+    try {
+        const limit = req.query.limit || 20;
+        const offset = req.query.offset || 0;
+
+        const albums = await Album.aggregate([
+            {
+                $lookup: {
+                    from: "songs",
+                    localField: "songs",
+                    foreignField: "_id",
+                    as: "songs"
+                }
+            },
+            { $unwind: "$songs" },
+            {
+                $group: {
+                    _id: "$_id",
+                    name: { $first: "$name" },
+                    totalPlays: { $sum: "$songs.plays" },
+                }
+            },
+            { $sort: { totalPlays: -1 } },
+            { $skip: Number(offset) },
+            { $limit: Number(limit) },
+        ]);
+
+        res.status(200).json(albums);
+    } catch (err) {
+        next(err);
+    }
+};
+
 module.exports = {
     createAlbum,
     updateAlbum,
@@ -119,4 +154,5 @@ module.exports = {
     getAlbum,
     getAllAlbums,
     getAlbumSongs,
+    getPopularAlbums,
 }

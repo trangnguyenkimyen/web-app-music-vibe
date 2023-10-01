@@ -55,6 +55,7 @@ const UserSchema = new mongoose.Schema({
     currentlyPlaying: [
         {
             itemId: { type: String },
+            type: { type: String },
             time: { type: Date, default: Date.now },
         }
     ],
