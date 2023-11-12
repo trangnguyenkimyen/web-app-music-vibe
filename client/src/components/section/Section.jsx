@@ -57,7 +57,7 @@ export default function Section({ type, title, url }) {
                                 ))}
                             </>
                             : <>
-                                {data.map((item, index) => (
+                                {data?.map((item, index) => (
                                     <Card key={index} type={type || item.type} item={item} />
                                 ))}
                             </>

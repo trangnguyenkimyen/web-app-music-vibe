@@ -37,7 +37,7 @@ export default function Home() {
                                 navButtonsAlwaysVisible={isTouchDevice}
                                 autoPlay={false}
                             >
-                                {artistsData.map((artist) => (
+                                {artistsData?.map((artist) => (
                                     <ArtistItem key={artist._id} artist={artist} />
                                 ))}
                             </Carousel>
@@ -56,7 +56,7 @@ export default function Home() {
                                     ))}
                                 </>
                                 : <>
-                                    {songsData.map((song) => (
+                                    {songsData?.map((song) => (
                                         <SongItem key={song._id} song={song} />
                                     ))}
                                 </>}
