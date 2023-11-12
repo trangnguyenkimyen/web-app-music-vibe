@@ -11,14 +11,24 @@ import QueueMusicIcon from '@mui/icons-material/QueueMusic';
 import SettingsBackupRestoreIcon from '@mui/icons-material/SettingsBackupRestore';
 import { Divider } from "@mui/material";
 import { Link, useLocation } from "react-router-dom";
+import { useState } from "react";
 
 export default function Sidebar() {
     const location = useLocation();
     const page = location.pathname.split("/")[1];
+    const [expanded, setExpanded] = useState(false);
 
     return (
-        <div className="sidebar">
-            <Link to="/">
+        <div className={`sidebar ${expanded ? "expanded" : ""}`}>
+            <div
+                className="hamburger-menu"
+                onClick={() => { setExpanded(!expanded) }}
+            >
+                <div className="menu-line first-line"></div>
+                <div className="menu-line second-line"></div>
+                <div className="menu-line third-line"></div>
+            </div>
+            <Link to="/" className="link-logo">
                 <img src={logo} alt="logo" className="logo" />
             </Link>
             <Divider className="sidebar-divider" />

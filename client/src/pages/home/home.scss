@@ -1,12 +1,8 @@
 .home {
+
     .title {
         .title-text {
             font-weight: 600;
-            cursor: pointer;
-
-            &:hover {
-                text-decoration: underline;
-            }
         }
     }
 
@@ -39,50 +35,66 @@
 
                 .songs {
                     height: 300px;
+                    overflow-y: hidden;
                     display: flex;
                     flex-direction: column;
                     justify-content: space-between;
                 }
             }
         }
+    }
+}
 
-        .bottom {
-            section {
-                margin-bottom: 45px;
+// XS
+@media only screen and (max-width: 575px) {
+    .home {
+        .home-wrapper {
+            padding-bottom: 136px;
 
-                .title {
-                    margin-bottom: 20px;
-                    display: flex;
-                    align-items: last baseline;
-                    justify-content: space-between;
+            .top {
+                display: block;
 
-                    .more {
-                        font-size: 13px;
-                        font-weight: 600;
-                        color: #cccccc;
-                        cursor: pointer;
-                        padding-right: 20px;
-
-                        &:hover {
-                            text-decoration: underline;
-                        }
-                    }
+                .top-artists {
+                    min-width: auto;
+                    width: 100%;
+                    margin-bottom: 30px;
                 }
 
-                .cards {
-                    display: flex;
-                    flex-wrap: wrap;
-                    align-items: center;
-
-                    .wrapper-item {
-                        width: 20%;
-
-                        .item {
-                            padding-right: 20px;
-                        }
-                    }
+                .top-songs {
+                    min-width: auto;
                 }
             }
         }
     }
 }
+
+// SM
+@media only screen and (min-width: 576px) and (max-width: 768px) {
+    .home {
+        .home-wrapper {
+            .top {
+                display: block;
+            }
+        }
+    }
+}
+
+// MD
+@media only screen and (min-width: 769px) and (max-width: 992px) {
+    .home {
+        .home-wrapper {
+            .top {
+                display: block;
+            }
+        }
+    }
+}
+
+// LG
+@media only screen and (min-width: 993px) and (max-width: 1200px) {}
+
+// XL
+@media only screen and (min-width: 1201px) and (max-width: 1400px) {}
+
+// XXL
+@media only screen and (min-width: 1401px) {}

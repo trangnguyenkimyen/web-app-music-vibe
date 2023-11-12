@@ -1,6 +1,7 @@
 const Album = require("../models/Album");
 const Artist = require("../models/Artist");
 const Song = require("../models/Song");
+const User = require("../models/User");
 const createError = require("../utils/error");
 
 // @desc    Create an artist  
@@ -97,7 +98,7 @@ const getArtistAlbum = async (req, res, next) => {
             const albums = await getAlbums({
                 artists: req.params.id,
                 album_type: { $in: include_groups },
-            }, offset, Math.ceil(limit / 2));
+            }, offset, limit);
 
             if (include_groups.includes("appears_on")) {
                 const songs = await Song.find({
@@ -109,8 +110,11 @@ const getArtistAlbum = async (req, res, next) => {
                 const appears_on = await getAlbums({
                     artists: { $ne: req.params.id },
                     _id: { $in: albumIds },
-                }, offset, Math.floor(limit / 2));
+                }, offset, limit);
 
+                if (include_groups.length === 1) {
+                    return res.status(200).json(appears_on);
+                }
                 return res.status(200).json({ albums, appears_on });
             }
             return res.status(200).json(albums);
@@ -130,6 +134,8 @@ const getArtistAlbum = async (req, res, next) => {
 // @route   GET api/artists/:id/top-songs
 const getArtistTopSongs = async (req, res, next) => {
     try {
+        const limit = req.query.limit || 20;
+
         const songs = await Song
             .find({
                 artists: req.params.id,
@@ -140,12 +146,12 @@ const getArtistTopSongs = async (req, res, next) => {
             })
             .populate({
                 path: "album",
-                select: "name"
+                select: "name images"
             })
             .sort({
                 "plays": -1
             })
-            .limit(10);
+            .limit(limit);
 
         res.status(200).json(songs);
     } catch (err) {
@@ -188,6 +194,7 @@ const getPopularArtists = async (req, res, next) => {
                 $group: {
                     _id: "$_id",
                     name: { "$first": "$name" },
+                    images: { "$first": "$images" },
                     followersCount: { "$sum": 1 },
                 }
             },

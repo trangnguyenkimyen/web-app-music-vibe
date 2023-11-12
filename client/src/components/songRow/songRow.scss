@@ -4,62 +4,6 @@
     padding: 5px 5px;
     border-radius: 3px;
 
-    &:focus,
-    &:focus-within,
-    &:hover {
-        background-color: #96969650;
-
-        .number {
-
-            .text,
-            .music-wave {
-                opacity: 0;
-            }
-
-            .icon {
-                opacity: 1;
-            }
-        }
-
-        .song-info {
-            .wrapper-text {
-                .artists {
-                    span:not(.comma) {
-                        color: white;
-                    }
-                }
-            }
-        }
-
-        .song-album,
-        .song-plays {
-            .text {
-                color: white;
-            }
-        }
-
-        .button {
-            .more {
-                opacity: 1;
-
-                .icon {
-                    color: white;
-                }
-            }
-
-            .icon {
-                &.liked {
-                    opacity: 1;
-                }
-            }
-        }
-    }
-
-    &:focus,
-    &:focus-within {
-        background-color: #9696968a;
-    }
-
     .number {
         display: flex;
         align-items: center;
@@ -118,10 +62,6 @@
                 overflow: hidden;
                 text-overflow: ellipsis;
 
-                &:hover {
-                    text-decoration: underline;
-                }
-
                 &.played {
                     color: #EFFE62;
                 }
@@ -137,10 +77,6 @@
                     font-size: 12px;
                     font-weight: 500;
                     color: #cccccc;
-
-                    &:not(.comma):hover {
-                        text-decoration: underline;
-                    }
                 }
             }
         }
@@ -157,10 +93,6 @@
             font-weight: 500;
             color: #cccccc;
             cursor: pointer;
-
-            &:hover {
-                text-decoration: underline;
-            }
         }
     }
 
@@ -190,29 +122,132 @@
         .icon {
             font-size: 20px;
             cursor: pointer;
+        }
+    }
 
-            &.liked {
-                color: #969696;
-                transition: color .1s ease;
-                opacity: 0;
+    .like-btn {
+        font-size: 20px;
+        margin-right: 20px;
+    }
+}
 
-                &:hover {
+// Thiet bi khong phai cam ung
+@media (hover: hover) and (pointer: fine) {
+    .song-row {
+
+        &:focus,
+        &:focus-within,
+        &:hover {
+            background-color: #96969650;
+
+            .number {
+
+                .text,
+                .music-wave {
+                    opacity: 0;
+                }
+
+                .icon {
+                    opacity: 1;
+                }
+            }
+
+            .song-info {
+                .wrapper-text {
+                    .artists {
+                        span:not(.comma) {
+                            color: white;
+                        }
+                    }
+                }
+            }
+
+            .song-album,
+            .song-plays {
+                .text {
                     color: white;
                 }
             }
 
-            &.unliked {
-                color: #EFFE62;
-                opacity: 1;
+            .button {
+                &.like {
+                    .like-btn {
+                        .wrapper-like-btn {
+                            .icon:not(.unliked) {
+                                opacity: 1;
+                            }
+                        }
+                    }
+                }
 
-                &:hover {
-                    opacity: 0.8;
+                &.more {
+                    .button {
+                        opacity: 1;
+
+                        .icon {
+                            color: white;
+                        }
+                    }
                 }
             }
         }
 
-        .more {
-            opacity: 0;
+        &:focus,
+        &:focus-within {
+            background-color: #9696968a;
+        }
+
+        .song-info {
+            .wrapper-text {
+                .name {
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
+
+                .artists {
+                    span {
+                        &:not(.comma):hover {
+                            text-decoration: underline;
+                        }
+                    }
+                }
+            }
+        }
+
+        .song-album {
+            .text {
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+
+        .button {
+            &.like {
+                .like-btn {
+                    .wrapper-like-btn {
+                        .icon:not(.unliked) {
+                            opacity: 0;
+                        }
+                    }
+                }
+            }
+
+            &.more {
+                .button {
+                    opacity: 0;
+                }
+            }
         }
     }
 }
+
+// XS
+@media only screen and (max-width: 575px) {}
+
+// SM
+@media only screen and (min-width: 576px) and (max-width: 768px) {}
+
+// MD
+@media only screen and (min-width: 769px) and (max-width: 992px) {}

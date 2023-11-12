@@ -39,7 +39,7 @@ const getSong = async (req, res, next) => {
                 },
                 {
                     path: "album",
-                    select: "name",
+                    select: "name images",
                 }
             ])
         res.status(200).json(song);
@@ -115,14 +115,22 @@ const getPopularSongs = async (req, res, next) => {
                 }
             },
             {
-                $match: {
-                    "album.release_date": { $gte: new Date(new Date().setMonth(new Date().getMonth() - 12)) }
+                $lookup: {
+                    from: "artists",
+                    localField: "artists",
+                    foreignField: "_id",
+                    as: "artists"
                 }
             },
+            // {
+            //     $match: {
+            //         "album.release_date": { $gte: new Date(new Date().setMonth(new Date().getMonth() - 12)) }
+            //     }
+            // },           
             { $sort: { plays: -1 } },
             { $skip: Number(offset) },
             { $limit: Number(limit) },
-            { $project: { _id: 1, name: 1, } }
+            { $project: { plays: 1, _id: 1, name: 1, album: 1, artists: 1, audio: 1, duration_ms: 1, explicit: 1 } }
         ]);
 
         return res.status(200).json(songs);
@@ -148,6 +156,14 @@ const getNewReleasedSongs = async (req, res, next) => {
                 }
             },
             {
+                $lookup: {
+                    from: "artists",
+                    localField: "artists",
+                    foreignField: "_id",
+                    as: "artists"
+                }
+            },
+            {
                 $match: {
                     "album.release_date": { $gte: new Date(new Date().setMonth(new Date().getMonth() - 12)) }
                 }
@@ -155,7 +171,7 @@ const getNewReleasedSongs = async (req, res, next) => {
             { $sort: { "album.release_date": -1 } },
             { $skip: Number(offset) },
             { $limit: Number(limit) },
-            { $project: { _id: 1, name: 1, } }
+            { $project: { _id: 1, name: 1, album: 1, artists: 1 } }
         ]);
 
         return res.status(200).json(songs);

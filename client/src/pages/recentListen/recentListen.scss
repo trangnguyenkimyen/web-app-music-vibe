@@ -3,30 +3,37 @@
         padding: 5px 15px 90px;
 
         .title {
+            margin-bottom: 20px;
             font-weight: 600;
-            margin-bottom: 8px;
-            color: #EFFE62;
         }
 
-        section {
-            .section-title {
-                font-weight: 600;
-                padding: 24px 0 8px;
-                color: #cccccc;
+        .cards {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+
+            .wrapper-item {
+                .item {
+                    padding-bottom: 40px;
+                }
             }
 
+        }
+    }
+}
+
+// XS
+@media only screen and (max-width: 575px) {
+    .recent-listen {
+        .recent-listen-wrapper {
+            padding-bottom: 136px;
+
             .cards {
-                display: flex;
-                flex-wrap: wrap;
-                align-items: center;
-                margin-top: 16px;
+                justify-content: space-between;
 
                 .wrapper-item {
-                    width: 20%;
-
                     .item {
-                        padding-right: 20px;
-                        padding-bottom: 40px;
+                        margin-right: 0;
                     }
                 }
             }

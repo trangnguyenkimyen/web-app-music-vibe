@@ -1,0 +1,40 @@
+.like-btn {
+    margin: 0 15px;
+
+    .wrapper-like-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .icon {
+            font-size: inherit;
+            color: #969696;
+            transition: color .1s ease;
+            cursor: pointer;
+
+            &.unliked {
+                color: #EFFE62;
+                opacity: 1;
+            }
+        }
+    }
+}
+
+// Thiet bi khong phai cam ung
+@media (hover: hover) and (pointer: fine) {
+    .like-btn {
+        .wrapper-like-btn {
+            .icon {
+                &:not(.unliked):hover {
+                    color: white;
+                }
+
+                &.unliked {
+                    &:hover {
+                        opacity: 0.8;
+                    }
+                }
+            }
+        }
+    }
+}

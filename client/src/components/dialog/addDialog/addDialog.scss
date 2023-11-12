@@ -1,8 +1,9 @@
-.dialog {
+.add-dialog {
     .wrapper-dialog {
         padding: 20px;
         background-color: #333333;
         color: white;
+        width: 550px;
 
         .dialog-top {
             display: flex;
@@ -34,7 +35,7 @@
             display: flex;
 
             .dialog-bottom-left {
-                flex: 4;
+                flex: 6;
 
                 .wrapper-left {
                     padding-right: 18px;
@@ -65,6 +66,7 @@
                         img {
                             width: 100%;
                             height: 100%;
+                            object-fit: cover;
                             transition: filter .1s ease;
                         }
                     }
@@ -83,7 +85,7 @@
             }
 
             .dialog-bottom-right {
-                flex: 8;
+                flex: 6;
                 position: relative;
 
                 .wrapper-right {
@@ -124,33 +126,42 @@
                                     padding: 5px;
                                 }
                             }
+
+                            &.desc {
+                                margin-top: 5px;
+                                background-color: #414040;
+                                padding: 5px;
+                                border-radius: 10px 10px 0 0;
+                            }
                         }
                     }
 
-                    .save-button {
-                        position: absolute;
-                        right: 0;
-                        bottom: 0;
-                        background: none;
-                        border: 2px solid white;
-                        padding: 5px 25px;
-                        color: white;
-                        font-family: inherit;
-                        font-weight: 500;
-                        border-radius: 6px;
-                        cursor: pointer;
+                    .button {
+                        display: flex;
+                        justify-content: flex-end;
 
-                        &:not(:disabled):hover {
-                            border: 2px solid #EFFE62;
-                            background-color: #EFFE62;
-                            color: black;
-                            font-weight: 700;
-                        }
+                        .save-button {
+                            background: none;
+                            border: 2px solid white;
+                            padding: 5px 25px;
+                            color: white;
+                            font-family: inherit;
+                            font-weight: 500;
+                            border-radius: 6px;
+                            cursor: pointer;
 
-                        &:disabled {
-                            color: #cccccc;
-                            border-color: #969696;
-                            cursor: default;
+                            &:not(:disabled):hover {
+                                border: 2px solid #EFFE62;
+                                background-color: #EFFE62;
+                                color: black;
+                                font-weight: 700;
+                            }
+
+                            &:disabled {
+                                color: #cccccc;
+                                border-color: #969696;
+                                cursor: default;
+                            }
                         }
                     }
                 }
@@ -158,3 +169,42 @@
         }
     }
 }
+
+// XS
+@media only screen and (max-width: 575px) {
+    .add-dialog {
+        .wrapper-dialog {
+            width: 80vw;
+
+            .dialog-bottom {
+                flex-direction: column;
+
+                .dialog-bottom-left {
+                    .wrapper-left {
+                        margin-bottom: 10px;
+
+                        .playlist-img {
+                            height: 150px;
+                            width: 150px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// SM
+@media only screen and (min-width: 576px) and (max-width: 768px) {}
+
+// MD
+@media only screen and (min-width: 769px) and (max-width: 992px) {}
+
+// LG
+@media only screen and (min-width: 993px) and (max-width: 1200px) {}
+
+// XL
+@media only screen and (min-width: 1201px) and (max-width: 1400px) {}
+
+// XXL
+@media only screen and (min-width: 1401px) {}

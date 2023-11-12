@@ -21,10 +21,10 @@ const getPlaylists = async (req, res, next) => {
                 options: {
                     skip: offset,
                     limit: limit
-                }
+                },
+                match: { owner: { $eq: req.user.id } }
             });
         res.status(200).json(user.playlists);
-
     } catch (err) {
         next(err);
     }
@@ -49,10 +49,26 @@ const getTopItems = async (req, res, next) => {
         const limit = req.query.limit || 20;
         const offset = req.query.offset || 0;
         const type = req.params.type;
-        const user = await User.findById(req.user.id);
-        const itemIds = await Promise.all(
-            user.currentlyPlaying.map(item => { return item.itemId })
-        );
+
+        // Group by itemId and count the number of duplicate
+        const duplicates = await User.aggregate([
+            { $unwind: '$currentlyPlaying' },
+            {
+                $group: {
+                    _id: '$currentlyPlaying.itemId',
+                    count: { $sum: 1 }
+                }
+            },
+            {
+                $sort: {
+                    count: -1 // decrease
+                }
+            }
+        ]);
+
+        const itemIds = duplicates.map(d => {
+            return d._id;
+        });
 
         if (type === "songs") {
             const songs = await Song
@@ -84,6 +100,7 @@ const getFollowedArtists = async (req, res, next) => {
     try {
         const type = req.query.type;
         const limit = req.query.limit || 20;
+        const offset = req.query.offset || 0;
         const user = await User.findById(req.user.id);
 
         if (type === "user") {
@@ -91,7 +108,8 @@ const getFollowedArtists = async (req, res, next) => {
                 .find({
                     _id: user.followings,
                 })
-                .select("name img")
+                .select("name img type")
+                .skip(offset)
                 .limit(limit);
             return res.status(200).json(list);
         } else if (type === "artist") {
@@ -99,7 +117,8 @@ const getFollowedArtists = async (req, res, next) => {
                 .find({
                     _id: user.followings,
                 })
-                .select("name images")
+                .select("name images type")
+                .skip(offset)
                 .limit(limit);
             return res.status(200).json(list);
         } else {
@@ -129,7 +148,7 @@ const getLikedPlaylists = async (req, res, next) => {
     } catch (err) {
         next(err);
     }
-}
+};
 
 // @desc    Get user's liked songs
 // @route   GET api/me/liked-songs
@@ -144,102 +163,86 @@ const getLikedSongs = async (req, res, next) => {
             .populate({
                 path: "likedSongs",
                 options: { skip: offset, limit: limit },
+                populate: [
+                    {
+                        path: "album",
+                        select: "name images"
+                    },
+                    {
+                        path: "artists",
+                        select: "name"
+                    }
+                ]
             });
         res.status(200).json(user.likedSongs);
     } catch (err) {
         next(err);
     }
-}
+};
+
+// @desc    Get user's liked albums
+// @route   GET api/me/liked-albums
+const getLikedAlbums = async (req, res, next) => {
+    try {
+        const limit = req.query.limit || 20;
+        const offset = req.query.offset || 0;
+        const curUserId = req.user.id;
+
+        const user = await User
+            .findById(curUserId)
+            .populate({
+                path: "albums",
+                options: { skip: offset, limit: limit },
+                populate: [
+                    {
+                        path: "artists",
+                        select: "name"
+                    }
+                ],
+                select: "name images artists"
+            });
+        res.status(200).json(user.albums);
+    } catch (err) {
+        next(err);
+    }
+};
 
 // @desc    Get user's currently played
 // @route   GET api/me/currently-played
 const getCurrentlyPlayed = async (req, res, next) => {
     try {
-        const user = await User.findById(req.user.id);
-        const itemIds = await Promise.all(
-            user.currentlyPlaying.map(item => { return item.itemId })
-        );
-
-        let items = await Promise.all(
-            itemIds.map(async (itemId) => {
-                let result;
-
-                const album = await Album
-                    .findById(itemId)
-                    .select("name images");
-                const artist = await Artist
-                    .findById(itemId)
-                    .select("name images");
-                const playlist = await Playlist
-                    .findById(itemId)
-                    .select("name images");
-                const song = await Song
-                    .findById(itemId)
-                    .select("name")
-                    .populate({
-                        path: "album",
-                        select: "images",
-                    });
-                if (album) {
-                    result = album;
-                } else if (artist) {
-                    result = artist;
-                } else if (playlist) {
-                    result = playlist;
-                } else if (song) {
-                    result = song;
-                }
-
-                return result;
-            })
-        );
-        items = items.slice(0, 44);
-        res.status(200).json(items);
-    } catch (err) {
-        next(err);
-    }
-}
-
-// @desc    Get personalized playlists
-// @route   GET api/me/peronalized-playlists
-const getPersonalizedPlaylists = async (req, res, next) => {
-    try {
         const limit = req.query.limit || 20;
         const offset = req.query.offset || 0;
+        const user = await User
+            .findById(req.user.id)
+            .populate({
+                path: 'currentlyPlaying.itemId',
+                sort: { date: -1 },
+                populate: [
+                    {
+                        path: "artists",
+                        select: "name",
+                        strictPopulate: false,
+                    },
+                    {
+                        path: "album",
+                        select: "name images",
+                        strictPopulate: false,
+                    }
+                ]
+            });
 
-        let list = await User.aggregate([
-            { $match: { _id: new mongoose.Types.ObjectId(req.user.id) } },
-            { $unwind: "$currentlyPlaying" },
-            {
-                $group:
-                {
-                    _id: "$currentlyPlaying.itemId",
-                    currentlyPlaying: { $first: "$currentlyPlaying" }
-                }
-            },
-            { $replaceRoot: { newRoot: "$currentlyPlaying" } },
-            {
-                $match:
-                {
-                    type: "song",
-                    time: { $gte: new Date(new Date().setMonth(new Date().getMonth() - 6)) }
-                }
-            },
-            { $sort: { time: -1 } },
-            { $sample: { size: 50 } },
-            { $skip: Number(offset) },
-            { $limit: Number(limit) },
-        ]);
+        let list = user.currentlyPlaying.slice(offset, limit);
 
-        list = await Promise.all(
-            list.map(item => { return item.itemId })
-        )
+        list = list.map(item => {
+            return item.itemId;
+        })
 
         res.status(200).json(list);
     } catch (err) {
         next(err);
     }
-};
+}
 
 // @desc    Get recommended artists
 // @route   GET api/me/recommended-artists
@@ -248,83 +251,73 @@ const getRecommendedArtists = async (req, res, next) => {
         const limit = req.query.limit || 20;
         const offset = req.query.offset || 0;
 
-        const user = await User.findById(req.user.id);
-        const likedSongs = user.likedSongs;
-
-        let albumIds = [];
-        let songIds = [];
-
-        let list = await User
-            .aggregate([
-                {
-                    $match: {
-                        _id: new mongoose.Types.ObjectId(req.user.id)
-                    }
-                },
-                { $project: { "likedSongs": 1, "albums": 1, "currentlyPlaying": 1 } },
-                { $unwind: "$currentlyPlaying" },
-                {
-                    $group: {
-                        _id: "$_id",
-                        likedSongs: { $first: "$likedSongs" },
-                        albums: { $first: "$albums" },
-                        currentlyPlaying: { $push: "$currentlyPlaying" },
-                    }
-                },
-                { $project: { "_id": 0 } },
-            ]);
-
-        albumIds = list[0].albums;
-        songIds = list[0].likedSongs;
-
-        const date = new Date(new Date().setMonth(new Date().getMonth() - 6));
-
-        list.map((listItem) => {
-            listItem.currentlyPlaying.map(currentItem => {
-                if (currentItem.time < date) {
-                    return;
-                }
-                if (currentItem.type === "song") {
-                    songIds.push(currentItem.itemId);
-                } else {
-                    albumIds.push(currentItem.itemId);
-                }
+        const user = await User
+            .findById(req.user.id)
+            .populate({
+                path: "likedSongs",
+                select: "artists"
             })
+            .populate({
+                path: "albums",
+                select: "artists"
+            })
+            .populate({
+                path: "currentlyPlaying.itemId",
+                populate: [
+                    {
+                        path: "artists",
+                        select: "name",
+                        strictPopulate: false,
+                    },
+                ],
+                select: "type"
+            });
+
+        // Get artists in liked songs
+        const likedSongsArtists = user.likedSongs.flatMap(s => {
+            return s.artists;
         });
 
-        const albums = await Album.find({
-            _id: { $in: albumIds }
+        // Get artists in liked albums
+        const likedAlbumsArtists = user.albums.flatMap(a => {
+            return a.artists;
         });
 
-        await Promise.all(
-            albums.map((album) => {
-                album.songs.map(song => {
-                    return songIds.push(song);
-                })
-            })
-        );
-
-        list = await Song.aggregate([
-            { $match: { _id: { $in: songIds, $nin: likedSongs } } },
-            { $sample: { size: 50 } },
-            { $skip: Number(offset) },
-            { $limit: Number(limit) },
-        ]);
-
-        list = await Promise.all(
-            list.map(item => {
-                return item.artists;
-            })
-        );
-
-        list = await list.flatMap(item => { return item });
-
-        list = await Artist.find({
-            _id: { $in: list },
-            followers: { $nin: req.user.id }
+        // Get artists in currentlyPlaying
+        let currentlyPlayingArtists = user.currentlyPlaying.map(c => {
+            if (c.itemId.type === "artist") {
+                return c.itemId._id;
+            } else {
+                return c.itemId.artists;
+            }
+        });
+        currentlyPlayingArtists = currentlyPlayingArtists.flat(2);
+        const flattedCurrentlyPlayingArtists = currentlyPlayingArtists.map(a => {
+            return a._id;
         });
 
-        res.status(200).json(list);
+        // Get related artists of favor artists
+        const songs = await Song
+            .find({
+                artists: { $in: user.followings }
+            })
+            .select("artists");
+        const relatedArtists = songs.flatMap(s => {
+            return s.artists;
+        })
+
+        let list = [likedSongsArtists, likedAlbumsArtists, flattedCurrentlyPlayingArtists, relatedArtists];
+        list = list.flat(1);
+
+        const result = await Artist
+            .find({
+                _id: { $in: list },
+                followers: { $nin: req.user.id }
+            })
+            .skip(offset)
+            .limit(limit);
+
+        res.status(200).json(result);
     } catch (err) {
         next(err);
     }
@@ -337,62 +330,108 @@ const getRecommendedSongs = async (req, res, next) => {
         const limit = req.query.limit || 20;
         const offset = req.query.offset || 0;
 
-        const user = await User.findById(req.user.id);
-        const likedSongs = user.likedSongs;
-
-        let albumIds = [];
-        let songIds = [];
-
-        let list = await User
-            .aggregate([
-                { $match: { _id: new mongoose.Types.ObjectId(req.user.id) } },
-                { $project: { "albums": 1, "currentlyPlaying": 1 } },
-                { $unwind: "$currentlyPlaying" },
-                {
-                    $group: {
-                        _id: "$_id",
-                        albums: { $first: "$albums" },
-                        currentlyPlaying: { $push: "$currentlyPlaying" },
-                    }
-                },
-                { $project: { "_id": 0 } },
-            ]);
-
-        albumIds = list[0].albums;
-
-        const date = new Date(new Date().setMonth(new Date().getMonth() - 6));
-
-        list.map((listItem) => {
-            listItem.currentlyPlaying.map(currentItem => {
-                if (currentItem.time < date) {
-                    return;
-                }
-                if (currentItem.type === "song") {
-                    songIds.push(currentItem.itemId);
-                } else {
-                    albumIds.push(currentItem.itemId);
-                }
+        const user = await User
+            .findById(req.user.id)
+            .populate({
+                path: "albums",
+                select: "songs",
+                options: { limit: 5 },
             })
-        });
+            .populate({
+                path: "playlists",
+                match: { "owner": { $eq: req.user.id } },
+                select: "songs",
+                options: { limit: 3 },
+            })
+            .populate({
+                path: "currentlyPlaying.itemId",
+                populate: [
+                    {
+                        path: "songs",
+                        select: "_id",
+                        strictPopulate: false,
+                    },
+                ],
+                select: "type"
+            });
 
-        const albums = await Album.find({
-            _id: { $in: albumIds }
-        });
-
-        await Promise.all(
-            albums.map((album) => {
-                album.songs.map(song => {
-                    return songIds.push(song);
-                })
+        // Songs from favor albums
+        const albumSongs = await Promise.all(
+            user.albums.flatMap(album => {
+                return album.songs;
             })
         );
 
-        list = await Song.aggregate([
-            { $match: { _id: { $in: songIds, $nin: likedSongs } } },
-            { $sample: { size: 50 } },
-            { $skip: Number(offset) },
-            { $limit: Number(limit) },
-        ]);
+        // Songs from favor artists
+        const artists = await Artist
+            .find({
+                _id: { $in: user.followings }
+            });
+
+        let artistSongs = await Song
+            .find({
+                artists: { $in: artists }
+            })
+            .select("_id");
+        artistSongs = await Promise.all(
+            artistSongs.flatMap(song => {
+                return song._id;
+            })
+        );
+
+        // Songs from favor playlists
+        const playlistSongs = await Promise.all(
+            user.playlists.flatMap(playlist => {
+                return playlist.songs;
+            })
+        );
+
+        // Currently listening's songs
+        let currentListenSongs = await Promise.all(
+            user.currentlyPlaying.map(item => {
+                if (item.itemId.type === "song") {
+                    return item.itemId._id;
+                } else if (item.itemId.type !== "artist") {
+                    return item.itemId.songs.map(song => {
+                        return song._id;
+                    });
+                }
+            })
+        );
+
+        currentListenSongs = currentListenSongs.flat(2);
+
+        let songIds = [albumSongs, artistSongs, playlistSongs, currentListenSongs];
+
+        songIds = songIds.flat(1);
+
+        const list = await Song.aggregate([
+            {
+                $match: { _id: { $in: songIds, $nin: user.likedSongs } }
+            },
+            {
+                $sample: { size: Number(limit) }
+            },
+            {
+                $skip: offset
+            },
+            {
+                $lookup: {
+                    from: "albums",
+                    localField: "album",
+                    foreignField: "_id",
+                    as: "album",
+                },
+            },
+            {
+                $lookup: {
+                    from: "artists",
+                    localField: "artists",
+                    foreignField: "_id",
+                    as: "artists",
+                }
+            },
+        ])
 
         res.status(200).json(list);
     } catch (err) {
@@ -524,9 +563,14 @@ const likeAlbum = async (req, res, next) => {
 // @route   PUT api/me/currently-played/:id
 const addCurrentlyPlayed = async (req, res, next) => {
     try {
+        const item = {
+            itemId: req.params.id,
+            itemModel: req.body.itemModel
+        }
         const user = await User.findByIdAndUpdate(req.user.id, {
-            $push: { currentlyPlaying: { itemId: req.params.id, type: req.body.type } }
-        }, { new: true })
+            $push: { currentlyPlaying: item }
+        }, { new: true });
+
         return res.status(200).json(user);
     } catch (err) {
         next(err);
@@ -540,8 +584,8 @@ module.exports = {
     getFollowedArtists,
     getLikedPlaylists,
     getLikedSongs,
+    getLikedAlbums,
     getCurrentlyPlayed,
-    getPersonalizedPlaylists,
     getRecommendedArtists,
     getRecommendedSongs,
     followPlaylist,

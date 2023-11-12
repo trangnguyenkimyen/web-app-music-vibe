@@ -1,0 +1,115 @@
+.reset-pass {
+    .wrapper-reset-pass {
+        padding: 10px 15px 110px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        form {
+            width: 500px;
+            background-color: #fff;
+            color: black;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 25px 40px;
+            border-radius: 20px;
+            box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25);
+            position: relative;
+
+            .title {
+                font-weight: 800;
+                font-size: 24px;
+                margin-bottom: 15px;
+            }
+
+            .form-control {
+                margin-bottom: 20px;
+                width: 100%;
+                font-size: 18px;
+                display: flex;
+                flex-direction: column;
+
+                label {
+                    font-size: 13px;
+                    font-weight: 600;
+                    margin-bottom: 8px;
+                }
+
+                input {
+                    border: none;
+                    border-bottom: 1px solid #969696;
+                    font-size: 14px;
+                    font-weight: 500;
+                    font-family: inherit;
+                    padding-bottom: 8px;
+                    transition: all .1s ease;
+
+                    &:focus {
+                        outline: none;
+                        border-bottom: 1px solid black;
+                    }
+                }
+
+                .wrapper-password {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    position: relative;
+
+                    .password {
+                        width: 100%;
+                        padding-right: 30px
+                    }
+
+                    .wrapper-icon {
+                        position: absolute;
+                        right: 0;
+                        cursor: pointer;
+                    }
+                }
+            }
+
+            button:not(.close-button) {
+                margin-bottom: 15px;
+                outline: none;
+                border: none;
+                background-color: #EFFE62;
+                padding: 10px 40px;
+                border-radius: 30px;
+                font-size: 14px;
+                font-weight: 600;
+                text-transform: uppercase;
+                cursor: pointer;
+
+                &.signin-button {
+                    &.true {
+                        margin-top: 15px;
+                    }
+                }
+
+                &:disabled {
+                    background-color: #969696;
+                    cursor: default;
+                }
+
+                &:focus {
+                    outline: none;
+                }
+
+                &:not(:disabled):active {
+                    scale: 0.9;
+                }
+
+                &:not(:disabled):hover {
+                    background-color: darken(#EFFE62, 10%);
+                }
+            }
+
+            .link {
+                text-decoration: underline;
+            }
+        }
+    }
+}

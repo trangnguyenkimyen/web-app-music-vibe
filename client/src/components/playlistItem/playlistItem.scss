@@ -40,9 +40,14 @@
                     font-weight: 500;
                     font-size: 16px;
                     margin-bottom: 5px;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 1;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
 
-                .owner {
+                .type {
                     font-weight: 500;
                     font-size: 13px;
                     color: #cccccc;
@@ -51,14 +56,45 @@
         }
 
         .playlist-item-right {
+
             .icon {
                 cursor: pointer;
-                color: white;
+                color: #969696;
+                transition: color .1s ease;
 
                 &:hover {
-                    opacity: 0.8;
+                    color: white;
                 }
             }
         }
     }
 }
+
+// XS
+@media only screen and (max-width: 575px) {
+    .playlist-item {
+        width: 50%;
+    }
+}
+
+// SM && MD
+@media only screen and (min-width: 576px) and (max-width: 992px) {
+    .playlist-item {
+        width: 33.33%;
+    }
+}
+
+// SM
+@media only screen and (min-width: 576px) and (max-width: 768px) {}
+
+// MD
+@media only screen and (min-width: 769px) and (max-width: 992px) {}
+
+// LG
+@media only screen and (min-width: 993px) and (max-width: 1200px) {}
+
+// XL
+@media only screen and (min-width: 1201px) and (max-width: 1400px) {}
+
+// XXL
+@media only screen and (min-width: 1401px) {}

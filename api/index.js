@@ -1,4 +1,6 @@
 const express = require("express");
+const exphbs = require("express-handlebars");
+const path = require('path');
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
@@ -29,6 +31,13 @@ app.use(cookie());
 // Body parser
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+
+// Static folder
+app.use('/public', express.static(path.join(__dirname, 'public')));
+
+// View engine setup
+app.engine('.hbs', exphbs());
+app.set('view engine', '.hbs');
 
 // Logging
 app.use(morgan("dev"));

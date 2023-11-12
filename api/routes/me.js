@@ -1,6 +1,6 @@
 const { getPlaylists, getProfile, getTopItems, getFollowedArtists,
     followPlaylist, followArtistUser, getLikedPlaylists, getLikedSongs,
-    likeSong, getCurrentlyPlayed, addCurrentlyPlayed, getPersonalizedPlaylists, getRecommendedArtists, getRecommendedSongs, likeAlbum } = require("../controllers/me");
+    likeSong, getCurrentlyPlayed, addCurrentlyPlayed, getRecommendedArtists, getRecommendedSongs, likeAlbum, getLikedAlbums } = require("../controllers/me");
 const validLimit = require("../utils/validLimit");
 const validObjectId = require("../utils/validObjectId");
 const { verifyUser } = require("../utils/verifyToken");
@@ -30,10 +30,10 @@ router.get("/following", [validLimit, verifyUser], getFollowedArtists);
 router.get("/liked-playlists", [validLimit, verifyUser], getLikedPlaylists);
 // Get user's liked songs
 router.get("/liked-songs", [validLimit, verifyUser], getLikedSongs);
+// Get user's liked albums
+router.get("/liked-albums", [validLimit, verifyUser], getLikedAlbums);
 // Get user's currently played
-router.get("/currently-played", verifyUser, getCurrentlyPlayed);
-// Get personalized playlists
-router.get("/personalized-playlists", [validLimit, verifyUser], getPersonalizedPlaylists);
+router.get("/currently-played", [validLimit, verifyUser], getCurrentlyPlayed);
 // Get recommended artists
 router.get("/recommended-artists", [validLimit, verifyUser], getRecommendedArtists);
 // Get recommended songs

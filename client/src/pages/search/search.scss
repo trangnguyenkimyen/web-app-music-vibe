@@ -1,0 +1,304 @@
+.search {
+    .wrapper-search {
+        padding: 5px 15px 90px;
+
+        .loading-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .circular {
+                color: #EFFE62;
+            }
+        }
+
+        .not-found {
+            height: 70vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 600;
+
+            p {
+                margin-bottom: 15px;
+            }
+
+            img {
+                height: 180px;
+            }
+        }
+
+        .chips {
+            position: sticky;
+            top: 70px;
+            z-index: 5;
+            background-color: #010A19;
+            padding: 10px 0 20px;
+            display: flex;
+            align-items: center;
+            overflow-x: auto;
+        }
+
+        .results {
+            section {
+                .cards {
+                    overflow-x: auto;
+                }
+
+                &.first {
+                    display: flex;
+
+                    .title {
+                        font-weight: 600;
+                    }
+
+                    .results-first-left {
+                        flex: 5;
+                        min-width: 0;
+                        margin-right: 25px;
+
+                        .top-result-box {
+                            display: flex;
+                            align-items: center;
+                            border-radius: 10px;
+                            position: relative;
+                            overflow: hidden;
+                            height: 300px;
+                            padding: 20px;
+
+                            &::before {
+                                content: '';
+                                display: block;
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                width: 100%;
+                                height: 100%;
+                                background-image: var(--background-src);
+                                background-repeat: no-repeat;
+                                background-size: cover;
+                                opacity: 0.5;
+                                filter: blur(30px);
+                                z-index: -1;
+                            }
+
+                            .wrapper-img {
+                                flex: 5;
+                                aspect-ratio: 1;
+                                box-shadow: 0 3px 10px #333333;
+                                margin-right: 25px;
+
+                                img {
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: cover;
+                                }
+                            }
+
+                            .content {
+                                flex: 7;
+
+                                .name {
+                                    font-weight: 700;
+                                    margin-bottom: 5px;
+                                    display: -webkit-box;
+                                    -webkit-line-clamp: 2;
+                                    -webkit-box-orient: vertical;
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;
+                                }
+
+                                .artists {
+                                    white-space: nowrap;
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;
+
+                                    span {
+                                        cursor: pointer;
+                                        font-size: 13px;
+                                        font-weight: 500;
+                                        color: #cccccc;
+                                        transition: color 0.1s ease;
+
+                                        &:not(.comma):hover {
+                                            text-decoration: underline;
+                                            color: white;
+                                        }
+                                    }
+                                }
+
+                                .desc {
+                                    font-size: 13px;
+                                    font-weight: 500;
+                                    color: #cccccc;
+                                    line-height: 1.6;
+                                    display: -webkit-box;
+                                    -webkit-line-clamp: 2;
+                                    -webkit-box-orient: vertical;
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;
+                                }
+                            }
+
+                            .button {
+                                position: absolute;
+                                bottom: 20px;
+                                right: 25px;
+                            }
+
+                            &:not(.artist) {
+                                .wrapper-img {
+                                    border-radius: 10px;
+                                    overflow: hidden;
+                                }
+
+                                .button {
+                                    bottom: 5px;
+                                    transition: scale .1s ease;
+
+                                    &:hover {
+                                        scale: 1.1;
+                                    }
+                                }
+
+                                .content {
+                                    .name {
+                                        font-size: 24px;
+                                        line-height: 1.3;
+                                    }
+                                }
+                            }
+
+                            &.artist {
+                                .wrapper-img {
+                                    border-radius: 0 180px 180px 180px;
+                                    overflow: hidden;
+                                }
+
+                                .content {
+                                    .name {
+                                        font-size: 32px;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    .results-first-right {
+                        flex: 5;
+                        min-width: 0;
+
+                        .songs {
+                            height: 300px;
+
+                            &.true {
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: space-between;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .cards-specific-type {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+
+                .wrapper-item {
+                    .item {
+                        padding-bottom: 40px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Thiet bi khong phai cam ung
+@media (hover: hover) and (pointer: fine) {}
+
+// XS
+@media only screen and (max-width: 575px) {
+    .search {
+        .wrapper-search {
+            padding-bottom: 136px;
+
+            .results {
+                section {
+                    &.first {
+                        display: block;
+
+                        .results-first-left {
+                            margin-bottom: 45px;
+                            margin-right: 0;
+
+                            .top-result-box {
+                                height: 200px;
+                            }
+                        }
+
+                        .results-first-right {
+                            .songs {
+                                height: auto;
+                            }
+                        }
+                    }
+                }
+
+                .cards-specific-type {
+                    justify-content: space-between;
+
+                    .wrapper-item {
+                        .item {
+                            margin-right: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// SM & MD
+@media only screen and (min-width: 576px) and (max-width: 992px) {
+    .search {
+        .wrapper-search {
+            .results {
+                section {
+                    &.first {
+                        display: block;
+
+                        .results-first-left {
+                            margin-bottom: 45px;
+                        }
+
+                        .results-first-right {
+                            .songs {
+                                height: auto;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// SM
+@media only screen and (min-width: 576px) and (max-width: 768px) {}
+
+// MD
+@media only screen and (min-width: 769px) and (max-width: 992px) {}
+
+// LG
+@media only screen and (min-width: 993px) and (max-width: 1200px) {}
+
+// XL
+@media only screen and (min-width: 1201px) and (max-width: 1400px) {}
+
+// XXL
+@media only screen and (min-width: 1401px) {}

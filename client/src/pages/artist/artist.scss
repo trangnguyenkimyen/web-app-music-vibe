@@ -45,7 +45,7 @@
 
 .artist {
     .artist-wrapper {
-        padding-bottom: 90px;
+        padding-bottom: 30px;
 
         .artist-top {
             margin-bottom: 30px;
@@ -55,14 +55,31 @@
                 height: 44vh;
                 width: 100%;
                 position: relative;
-                border-radius: 50%;
-                box-shadow: 0 20px 100px var(--color);
-                transition: box-shadow 4s ease;
 
-                img {
-                    width: 100%;
-                    height: 100%;
-                    object-fit: cover;
+                &:not(.loading) {
+                    border-radius: 50%;
+                    box-shadow: 0 20px 100px var(--color);
+                    transition: box-shadow 4s ease;
+                }
+
+                &.bg {
+                    img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                    }
+                }
+
+                &.noBg {
+                    img {
+                        display: none;
+                    }
+
+                    .no-background {
+                        width: 100%;
+                        height: 100%;
+                        background-color: var(--color);
+                    }
                 }
             }
 
@@ -70,7 +87,7 @@
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                padding: 5px 40px;
+                padding: 5px 24px;
 
                 .left {
                     display: flex;
@@ -123,6 +140,7 @@
             section {
                 &.popular-songs {
                     margin-bottom: 30px;
+                    padding: 0 24px;
 
                     .title-section {
                         padding-bottom: 15px;
@@ -172,17 +190,16 @@
                             }
 
                             .cards {
-                                display: flex;
-                                flex-wrap: wrap;
-                                justify-content: flex-start;
-                                align-items: center;
+                                &.custom {
+                                    display: flex;
+                                    flex-wrap: wrap;
+                                    justify-content: flex-start;
+                                    align-items: center;
 
-                                .wrapper-item {
-                                    width: 20%;
-
-                                    .item {
-                                        padding-bottom: 40px;
-                                        padding-right: 20px;
+                                    .wrapper-item {
+                                        .item {
+                                            padding-bottom: 40px;
+                                        }
                                     }
                                 }
                             }
@@ -209,10 +226,6 @@
                                             height: 42vh;
                                             background-color: black;
                                             transition: scale .3s ease;
-
-                                            &:hover {
-                                                scale: 1.02;
-                                            }
 
                                             img {
                                                 width: 100%;
@@ -328,3 +341,129 @@
         }
     }
 }
+
+// Thiet bi khong phai cam ung
+@media (hover: hover) and (pointer: fine) {
+    .artist {
+        .artist-wrapper {
+            .artist-bottom {
+                section {
+                    .tabs {
+                        .tab-panels {
+                            .tab-panel {
+                                &.fifth {
+                                    .artist-img {
+                                        .carousel {
+                                            .wrapper-img {
+                                                &:hover {
+                                                    scale: 1.02;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// XS
+@media only screen and (max-width: 575px) {
+    .artist {
+        .artist-wrapper {
+            padding-bottom: 70px;
+
+            .artist-top {
+                .artist-background {
+                    height: 30vh;
+                }
+
+                .artist-header {
+                    display: block;
+
+                    .left {
+                        margin-bottom: 20px;
+
+                        .first {
+                            .artist-avatar {
+                                width: 84px;
+                            }
+                        }
+
+                        .second {
+                            .text {
+                                font-size: 0.85em;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .artist-bottom {
+                section {
+                    &.tabs {
+                        .tab-panels {
+                            .tab-panel {
+                                .cards {
+                                    &.custom {
+                                        justify-content: space-between;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .wrapper-item {
+                    .item {
+                        .card {
+                            .inner {
+                                min-height: 238px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// SM & MD
+@media only screen and (min-width: 576px) and (max-width: 992px) {
+    .artist {
+        .artist-wrapper {
+            .artist-top {
+                .artist-background {
+                    height: 30vh;
+                }
+
+                .artist-header {
+                    display: block;
+
+                    .left {
+                        margin-bottom: 20px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// SM
+@media only screen and (min-width: 576px) and (max-width: 768px) {}
+
+// MD
+@media only screen and (min-width: 769px) and (max-width: 992px) {}
+
+// LG
+@media only screen and (min-width: 993px) and (max-width: 1200px) {}
+
+// XL
+@media only screen and (min-width: 1201px) and (max-width: 1400px) {}
+
+// XXL
+@media only screen and (min-width: 1401px) {}

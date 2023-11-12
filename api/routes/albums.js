@@ -15,7 +15,7 @@ router.put("/:id", [validObjectId, verifyAdmin], updateAlbum);
 router.delete("/:id", [validObjectId, verifyAdmin], deleteAlbum);
 
 // Get album by id
-router.get("/:id", validObjectId, getAlbum);
+router.get("/find/:id", validObjectId, getAlbum);
 // Get all albums
 router.get("/", getAllAlbums);
 // Get album's songs

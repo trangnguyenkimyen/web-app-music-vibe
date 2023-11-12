@@ -17,10 +17,12 @@
             flex: 3.5;
             display: flex;
             align-items: center;
+            min-width: 0;
 
             .img-wrapper {
                 width: 60px;
-                height: 60px;
+                min-width: 60px;
+                aspect-ratio: 1;
                 border-radius: 10px;
                 overflow: hidden;
                 cursor: pointer;
@@ -35,58 +37,39 @@
 
             .song-info {
                 margin-right: 15px;
+                min-width: 0;
 
                 .name {
                     font-size: 13px;
                     font-weight: 500;
                     margin-bottom: 5px;
                     cursor: pointer;
-                }
-
-                .name:hover {
-                    text-decoration: underline;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
 
                 .artists {
                     font-size: 12px;
                     font-weight: 400;
-                    color: #cccccc;
                     cursor: pointer;
                     transition: color 0.1s ease;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
 
-                    span:not(.comma):hover {
-                        color: white;
-                        text-decoration: underline;
+                    span {
+                        color: #cccccc;
+
+                        &:not(.comma):hover {
+                            color: white;
+                        }
                     }
                 }
             }
 
-            .button {
-                .audio-player-icon {
-                    color: #969696;
-                    font-size: 20px;
-                    position: relative;
-                    top: 0;
-                    transition: all 0.1s ease-in-out;
-                }
-
-                &.liked {
-                    .audio-player-icon {
-                        color: #EFFE62;
-                    }
-                }
-
-                &:not(.liked):hover {
-                    .audio-player-icon {
-                        color: white;
-                    }
-                }
-
-                &:hover {
-                    .audio-player-icon {
-                        top: -5px;
-                    }
-                }
+            .like-btn {
+                font-size: 20px;
             }
         }
 
@@ -107,10 +90,6 @@
                     font-size: 30px;
                     color: #969696;
                     transition: color 0.1s ease;
-
-                    &:not(.selected):hover {
-                        color: white;
-                    }
                 }
 
                 .replay-wrapper {
@@ -142,23 +121,16 @@
                 }
 
                 .play-pause {
-                    width: 40px;
-                    position: relative;
-                    bottom: -3px;
-                    transition: transform 0.1s ease;
-
-                    &:hover {
-                        transform: scale(1.1);
+                    .icon {
+                        color: #EFFE62;
+                        font-size: 42px;
+                        transition: transform 0.1s ease;
                     }
                 }
 
                 .selected {
                     color: #EFFE62;
                     transition: opacity .1s ease;
-
-                    &:hover {
-                        opacity: 0.8;
-                    }
                 }
             }
 
@@ -202,18 +174,10 @@
                         }
                     }
 
-                    &:hover {
-                        .MuiSlider-thumb {
-                            width: 12px;
-                            height: 12px;
-                            box-shadow: none !important;
-                        }
+                    .MuiSlider-thumb.Mui-active {
+                        width: 12px;
+                        height: 12px;
                     }
-
-                    // .MuiSlider-thumb.Mui-active {
-                    //     width: 12px;
-                    //     height: 12px;
-                    // }
                 }
             }
         }
@@ -231,10 +195,6 @@
                 transition: color 0.1s ease;
                 margin-right: 10px;
 
-                &:not(.selected):hover {
-                    color: white;
-                }
-
                 &.lyrics {
                     font-size: 20px;
                 }
@@ -248,10 +208,6 @@
             .selected {
                 color: #EFFE62;
                 transition: opacity .1s ease;
-
-                &:hover {
-                    opacity: 0.8;
-                }
             }
 
             .volume-wrapper {
@@ -279,35 +235,12 @@
                         }
                     }
                 }
-
-                &:hover {
-                    .icon {
-                        color: white;
-                    }
-
-                    .volume-control {
-                        cursor: default;
-
-                        .MuiSlider-track,
-                        .MuiSlider-thumb {
-                            color: #EFFE62;
-                        }
-
-                        .MuiSlider-thumb {
-                            width: 12px;
-                            height: 12px;
-                            box-shadow: none !important;
-                        }
-                    }
-                }
             }
         }
     }
 
     .queue-list {
-        position: absolute;
-        right: 0;
-        bottom: 86px;
+        width: 350px;
         padding: 15px;
         background-color: #0B182E;
         border-radius: 10px 0 0 0;
@@ -315,14 +248,30 @@
         overflow-y: auto;
 
         .title {
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 500;
             text-align: center;
             margin-bottom: 10px;
         }
 
+        .no-item-text {
+            font-size: 13px;
+            font-weight: 500;
+            color: #cccccc;
+            margin-bottom: 10px;
+        }
+
+        .wrapper-img {
+            display: flex;
+            justify-content: center;
+
+            .no-item-img {
+                width: 120px;
+            }
+        }
+
         .item-type-text {
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 500;
             color: #cccccc;
             margin-bottom: 5px;
@@ -343,5 +292,248 @@
             background-color: #969696a6;
         }
     }
-
 }
+
+// Thiet bi khong phai cam ung
+@media (hover: hover) and (pointer: fine) {
+    .audio-player {
+        .audio-player-wrapper {
+            .left {
+                .song-info {
+                    .name:hover {
+                        a {
+                            text-decoration: underline;
+                        }
+                    }
+
+                    span:not(.comma):hover {
+                        color: white;
+                        text-decoration: underline;
+                    }
+                }
+            }
+
+            .middle {
+                .control-button {
+                    .icon {
+                        &:not(.selected, .play, .pause):hover {
+                            color: white;
+                        }
+                    }
+
+                    .play-pause {
+                        .icon {
+                            &:hover {
+                                transform: scale(1.1);
+                            }
+                        }
+                    }
+
+                    .selected {
+                        &:hover {
+                            opacity: 0.8;
+                        }
+                    }
+                }
+
+                .control-timeline {
+                    .slider {
+                        &:hover {
+                            .MuiSlider-thumb {
+                                width: 12px;
+                                height: 12px;
+                                box-shadow: none !important;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .right {
+                .icon {
+                    &:not(.selected):hover {
+                        color: white;
+                    }
+                }
+
+                .selected {
+                    &:hover {
+                        opacity: 0.8;
+                    }
+                }
+
+                .volume-wrapper {
+                    &:hover {
+                        .icon {
+                            color: white;
+                        }
+
+                        .volume-control {
+                            cursor: default;
+
+                            .MuiSlider-track,
+                            .MuiSlider-thumb {
+                                color: #EFFE62;
+                            }
+
+                            .MuiSlider-thumb {
+                                width: 12px;
+                                height: 12px;
+                                box-shadow: none !important;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// XS
+@media only screen and (max-width: 575px) {
+    .audio-player {
+        bottom: 70px;
+
+        .audio-player-wrapper {
+            .left {
+                flex: 9.5;
+
+                .img-wrapper {
+                    width: 45px;
+                    min-width: 45px;
+                }
+
+                .more {
+                    display: none;
+                }
+            }
+
+            .middle {
+                flex: 1.5;
+
+                .control-button {
+
+                    .replay-wrapper,
+                    .icon:not(.play, .pause) {
+                        display: none;
+                    }
+                }
+
+                .control-timeline {
+                    z-index: 1;
+                    position: absolute;
+                    top: -20%;
+                    left: 0;
+                    display: block;
+
+                    .time {
+                        display: none;
+                    }
+
+                    .slider {
+                        width: 100%;
+                        padding: 3px 0;
+                    }
+                }
+            }
+
+            .right {
+                flex: 1;
+                padding-right: 0;
+
+                .divider {
+                    margin: 0 15px;
+                }
+
+                .icon {
+                    margin-right: 0;
+
+                    &.download,
+                    &.lyrics {
+                        display: none;
+                    }
+                }
+
+                .volume-wrapper {
+                    display: none;
+                }
+            }
+        }
+
+        .queue-list {
+            width: 100vw;
+            max-height: 300px;
+        }
+    }
+}
+
+// SM
+@media only screen and (min-width: 576px) and (max-width: 768px) {
+    .audio-player {
+        .audio-player-wrapper {
+            .left {
+                flex: 4.5;
+            }
+
+            .middle {
+                flex: 6;
+            }
+
+            .right {
+                flex: 1.5;
+
+                .icon {
+
+                    &.download,
+                    &.lyrics {
+                        display: none;
+                    }
+                }
+
+                .volume-wrapper {
+                    display: none;
+                }
+            }
+        }
+    }
+}
+
+// MD
+@media only screen and (min-width: 769px) and (max-width: 992px) {
+    .audio-player {
+        .audio-player-wrapper {
+            .left {
+                flex: 4.5;
+            }
+
+            .middle {
+                flex: 6;
+            }
+
+            .right {
+                flex: 1.5;
+
+                .icon {
+
+                    &.download,
+                    &.lyrics {
+                        display: none;
+                    }
+                }
+
+                .volume-wrapper {
+                    display: none;
+                }
+            }
+        }
+    }
+}
+
+// LG
+@media only screen and (min-width: 993px) and (max-width: 1200px) {}
+
+// XL
+@media only screen and (min-width: 1201px) and (max-width: 1400px) {}
+
+// XXL
+@media only screen and (min-width: 1401px) {}

@@ -2,8 +2,11 @@ import { useEffect } from "react";
 import "./recentListen.scss";
 import { Link } from "react-router-dom";
 import Card from "../../components/card/Card";
+import useFetch from "../../hooks/useFetch";
+import { Skeleton } from "@mui/material";
 
 export default function RecentListen() {
+    const { data, loading } = useFetch("/me/currently-played");
 
     useEffect(() => {
         document.title = "vibe - Nghe gần đây";
@@ -14,35 +17,27 @@ export default function RecentListen() {
             <div className="recent-listen-wrapper">
                 <h4 className="title">Nhật kí nghe của bạn</h4>
 
-                <section>
-                    <h4 className="section-title">Hôm nay</h4>
-                    <div className="cards">
-                        {[...Array(7)].map((_, index) => (
-                            <div className="wrapper-item">
-                                <div className="item">
-                                    <Link to={`/albums/${index}`}>
-                                        <Card key={index} type="album" />
-                                    </Link>
+                <div className="cards">
+                    {loading
+                        ? <>
+                            {[...Array(1)].map((_, index) => (
+                                <div className="wrapper-item" key={index}>
+                                    <div className="item">
+                                        <Skeleton variant="rounded" className="card skeleton" />
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
-                    </div>
-                </section>
-
-                <section>
-                    <h4 className="section-title">Chủ nhật</h4>
-                    <div className="cards">
-                        {[...Array(3)].map((_, index) => (
-                            <div className="wrapper-item">
-                                <div className="item">
-                                    <Link to={`/albums/${index}`}>
-                                        <Card key={index} type="album" />
-                                    </Link>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </section>
+                            ))}
+                        </>
+                        : <>
+                            {data.length > 0
+                                ? data.map((item, index) => (
+                                    <Card key={index} type={item.type} item={item} />
+                                ))
+                                : "Bạn chưa nghe bài nào hết"
+                            }
+                        </>
+                    }
+                </div>
             </div>
         </div>
     )

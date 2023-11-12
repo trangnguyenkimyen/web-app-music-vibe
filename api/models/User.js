@@ -11,29 +11,9 @@ const UserSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true,
+        default: "",
     },
     name: {
-        type: String,
-        required: true,
-    },
-    gender: {
-        type: String,
-        required: true,
-    },
-    month: {
-        type: String,
-        required: true,
-    },
-    day: {
-        type: Number,
-        required: true,
-    },
-    year: {
-        type: Number,
-        required: true,
-    },
-    country: {
         type: String,
         required: true,
     },
@@ -54,8 +34,8 @@ const UserSchema = new mongoose.Schema({
     albums: [{ type: objectId, ref: "Album" }],
     currentlyPlaying: [
         {
-            itemId: { type: String },
-            type: { type: String },
+            itemId: { type: String, refPath: "currentlyPlaying.itemModel" },
+            itemModel: { type: String, enum: ['Song', 'Album', 'Artist', 'Playlist'] },
             time: { type: Date, default: Date.now },
         }
     ],
@@ -69,8 +49,13 @@ const UserSchema = new mongoose.Schema({
         default: "user",
         enum: ["user"],
     },
+    provider: {
+        type: String,
+        default: "",
+    }
 }, {
-    timestamps: true,
+    timestamps: true
 });
+
 
 module.exports = mongoose.model("User", UserSchema);

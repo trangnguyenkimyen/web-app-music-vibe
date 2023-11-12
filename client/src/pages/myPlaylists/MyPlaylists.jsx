@@ -1,12 +1,27 @@
 import PlaylistItem from "../../components/playlistItem/PlaylistItem";
 import "./myPlaylists.scss";
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import imgSrc from "../../images/song/forgetmenow.jpg";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import AddDialog from "../../components/dialog/addDialog/AddDialog";
+import { AuthContext } from "../../context/AuthContext";
+import axios from "axios";
 
 export default function MyPlaylists() {
     const [openDialogAdd, setOpenDialogAdd] = useState(false);
+    const { user } = useContext(AuthContext);
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        if (user) {
+            const fetchData = async () => {
+                const res = await axios.get("/me/playlists");
+                setData(res.data);
+                setLoading(false);
+            };
+            fetchData();
+        }
+    }, [user]);
 
     useEffect(() => {
         document.title = "vibe - Playlist của bạn";
@@ -27,8 +42,13 @@ export default function MyPlaylists() {
                     setOpenDialogAdd={setOpenDialogAdd}
                 />
                 <div className="playlists">
-                    <PlaylistItem />
-                    <PlaylistItem img={imgSrc} />
+                    {loading
+                        ? "Đang load, đợi tí nha"
+                        : data?.length === 0
+                            ? <p>Bạn chưa có playlist nào. Hãy kiếm thêm các bài hát để làm đầy không gian này</p>
+                            : data.map(item => (
+                                <PlaylistItem key={item._id} item={item} />
+                            ))}
                 </div>
             </div>
         </div>

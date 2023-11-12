@@ -6,6 +6,7 @@
     border-radius: 3px;
 
     .left {
+        flex: 1;
         margin-right: 10px;
         display: flex;
         align-items: center;
@@ -34,13 +35,20 @@
     }
 
     .middle {
+        flex: 8.5;
+        min-width: 0;
         display: flex;
         align-items: center;
 
         .img-wrapper {
             width: 32px;
-            height: 32px;
+            min-width: 32px;
+            height: 100%;
+            aspect-ratio: 1;
             margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
             img {
                 width: 100%;
@@ -50,21 +58,16 @@
         }
 
         .song-info {
+            min-width: 0;
             margin-right: 15px;
-            width: 120px;
 
             .name {
                 font-size: 12px;
                 font-weight: 500;
                 margin-bottom: 3px;
-                cursor: pointer;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
-
-                &:hover {
-                    text-decoration: underline;
-                }
             }
 
             .artists {
@@ -78,26 +81,25 @@
 
                 span {
                     cursor: pointer;
-
-                    &:not(.comma):hover {
-                        color: white;
-                        text-decoration: underline;
-                    }
                 }
             }
         }
     }
 
     .right {
+        flex: 2.5;
+        min-width: 0;
         display: flex;
         align-items: center;
 
         .first {
+            flex: 6;
+            min-width: 0;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
-            margin-right: 12px;
+            margin-right: 8px;
 
             .text {
                 font-size: 11px;
@@ -106,15 +108,32 @@
                 cursor: default;
             }
 
-            .icon {
+            .like-btn {
+                font-size: 18px;
                 position: absolute;
-                opacity: 0;
+
+                .wrapper-like-btn {
+                    opacity: 0;
+                }
             }
         }
 
         .second {
+            flex: 6;
+            min-width: 0;
             display: flex;
             align-items: center;
+            position: relative;
+
+            .music-wave {
+                .loader {
+                    height: 13px;
+
+                    .stroke {
+                        width: 4px;
+                    }
+                }
+            }
         }
 
         .third {
@@ -127,33 +146,64 @@
         font-size: 18px;
         color: #969696;
         transition: color .1s ease;
-
-        &:hover {
-            color: white;
-        }
     }
 }
 
-.queue-item:hover {
-    background-color: #96969650;
+// Thiet bi khong phai cam ung
+@media (hover: hover) and (pointer: fine) {
+    .queue-item {
+        &:hover {
+            background-color: #96969650;
 
-    .left {
-        .number {
-            opacity: 0;
+            .left {
+                .number {
+                    opacity: 0;
+                }
+
+                .icon {
+                    opacity: 1;
+                }
+            }
+
+            .right {
+                .text {
+                    opacity: 0;
+                }
+
+                .like-btn {
+                    .wrapper-like-btn {
+                        opacity: 1;
+                    }
+                }
+            }
         }
 
         .icon {
-            opacity: 1;
+            &:hover {
+                color: white;
+            }
+        }
+
+        .middle {
+            .song-info {
+                .name {
+                    a {
+                        &:hover {
+                            text-decoration: underline;
+                        }
+                    }
+                }
+
+                .artists {
+                    span {
+                        &:not(.comma):hover {
+                            color: white;
+                            text-decoration: underline;
+                        }
+                    }
+                }
+            }
         }
     }
 
-    .right {
-        .text {
-            opacity: 0;
-        }
-
-        .icon {
-            opacity: 1;
-        }
-    }
 }

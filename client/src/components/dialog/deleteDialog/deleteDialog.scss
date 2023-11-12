@@ -33,15 +33,23 @@
                 &.no {
                     margin-right: 20px;
                     border: 2px solid white;
+
+                    &:active {
+                        scale: 0.9;
+                    }
                 }
 
                 &.yes {
                     background-color: rgb(221, 47, 68);
                     border: 2px solid rgb(221, 47, 68);
-                }
 
-                &:hover {
-                    opacity: 0.8;
+                    &:hover {
+                        background-color: darken($color: rgb(221, 47, 68), $amount: 10%);
+                    }
+
+                    &:active {
+                        scale: 0.9;
+                    }
                 }
             }
         }

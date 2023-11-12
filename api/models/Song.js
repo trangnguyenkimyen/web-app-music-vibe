@@ -35,7 +35,7 @@ const SongSchema = new mongoose.Schema({
         required: true,
         default: "song",
         enum: ["song"]
-    }
+    },
 }, {
     timestamps: true,
 });

@@ -52,7 +52,19 @@ const getAlbum = async (req, res, next) => {
         const album = await Album
             .findById(req.params.id)
             .populate("artists")
-            .populate("songs");
+            .populate({
+                path: "songs",
+                populate: [
+                    {
+                        path: "artists",
+                        select: "name"
+                    },
+                    {
+                        path: "album",
+                        select: "name images"
+                    }
+                ]
+            });
         if (!album) {
             return next(createError(403, "You are not authorized!"));
         }
@@ -103,7 +115,15 @@ const getAlbumSongs = async (req, res, next) => {
             .populate({
                 path: "songs",
                 options: { limit: limit, skip: offset },
-                populate: "artists"
+                populate: [
+                    {
+                        path: "artists"
+                    },
+                    {
+                        path: "album",
+                        select: "name images"
+                    }
+                ]
             });
 
         res.status(200).json(album.songs);
@@ -128,11 +148,21 @@ const getPopularAlbums = async (req, res, next) => {
                     as: "songs"
                 }
             },
+            {
+                $lookup: {
+                    from: "artists",
+                    localField: "artists",
+                    foreignField: "_id",
+                    as: "artists"
+                }
+            },
             { $unwind: "$songs" },
             {
                 $group: {
                     _id: "$_id",
                     name: { $first: "$name" },
+                    artists: { $first: "$artists" },
+                    images: { $first: "$images" },
                     totalPlays: { $sum: "$songs.plays" },
                 }
             },

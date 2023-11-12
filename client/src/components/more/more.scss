@@ -1,12 +1,4 @@
 .more {
-    &:focus-within {
-        .button {
-            .more-icon {
-                color: white;
-            }
-        }
-    }
-
     .button {
         .more-icon {
             font-size: 22px;
@@ -39,20 +31,23 @@
                     background-color: #96969650;
                 }
 
-                &.playlist {
+                &.playlist,
+                &.artist {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+
                     &.is-open {
                         background-color: #96969650;
-
-                        .more-icon {
-                            color: white;
-                        }
                     }
 
                     .more-icon {
-                        position: relative;
-                        right: -10px;
                         font-size: 18px;
                         transition: none;
+
+                        &.arrow {
+                            margin-left: 20px;
+                        }
                     }
                 }
             }
@@ -61,6 +56,30 @@
 
     .divider {
         border-color: #96969650;
+        margin: 0 !important;
+    }
+
+    .popper-artists {
+        z-index: 3333;
+
+        .artists {
+            background-color: #414040;
+
+            .artist-item {
+
+                &:hover,
+                &:focus {
+                    background-color: #96969650;
+                }
+
+                color: white;
+                font-size: 12px;
+                font-weight: 500;
+                font-family: 'Montserrat',
+                sans-serif;
+            }
+        }
+
     }
 
     .popper-playlists {
@@ -68,6 +87,7 @@
 
         .playlists {
             background-color: #414040;
+            width: 200px;
 
             .playlist-item {
                 color: white;
@@ -88,38 +108,54 @@
                 max-height: 200px;
                 overflow-y: auto;
 
+                &::-webkit-scrollbar {
+                    width: 6px;
+                }
+
+                &::-webkit-scrollbar-track {
+                    background-color: transparent;
+                }
+
+                &::-webkit-scrollbar-thumb {
+                    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+                    background-color: #96969686;
+                }
+
+                .no-playlist {
+                    font-size: 13px;
+                    font-weight: 400;
+                    color: white;
+                    padding: 10px 15px;
+                }
+
                 .playlist-item {
-                    position: relative;
-                    padding-right: 25px;
                     width: 100%;
+                    font-family: inherit;
+                    font-size: 13px;
+                    font-weight: 500;
 
-                    label {
+                    .name {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
                         width: 100%;
-                    }
 
-                    .form-control {
-                        span {
-                            font-size: 12px;
-                            font-weight: 500;
-                            font-family: 'Montserrat', sans-serif;
+                        .text {
+                            flex: 11;
+                            overflow: hidden;
+                            text-wrap: nowrap;
+                            text-overflow: ellipsis;
+                            margin-right: 15px;
                         }
 
-                        .checkbox {
-                            color: white;
-                            padding: 0 10px 0 5px;
+                        .icon {
+                            flex: 1;
 
-                            &.Mui-checked {
-                                color: #EFFE62;
+                            .more-icon {
+                                font-size: 16px;
                             }
                         }
                     }
-
-                    .more-icon {
-                        font-size: 14px;
-                        position: absolute;
-                        right: 10px;
-                    }
-
                 }
             }
 
@@ -143,6 +179,11 @@
 
                 .form-create-playlist {
                     padding: 10px;
+                    display: none;
+
+                    &.true {
+                        display: block;
+                    }
 
                     .form-group {
                         margin-bottom: 15px;

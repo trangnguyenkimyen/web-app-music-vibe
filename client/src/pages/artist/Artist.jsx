@@ -1,10 +1,4 @@
 import "./artist.scss";
-import img from "../../images/artist/obito.jpg";
-import img1 from "../../images/artist/den.jpg";
-import img2 from "../../images/artist/amee.jpg";
-import img3 from "../../images/artist/obito.jpg";
-import img4 from "../../images/artist/bray.jpg";
-import img5 from "../../images/artist/sunihalinh.jpg";
 import FacebookRoundedIcon from '@mui/icons-material/FacebookRounded';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import TwitterIcon from '@mui/icons-material/Twitter';
@@ -15,11 +9,13 @@ import { ColorExtractor } from "react-color-extractor";
 import PlayAllArtistSongsButton from "../../components/buttons/playAllArtistSongButton/PlayAllArtistSongButton";
 import FollowArtistButton from "../../components/buttons/followArtistButton/FollowArtistButton";
 import SongTable from "../../components/songTable/SongTable";
-import { Box, Chip, Grow, Modal, Tab } from "@mui/material";
+import { Box, Chip, Grow, Modal, Skeleton, Tab } from "@mui/material";
 import { TabPanel, TabContext, TabList } from "@mui/lab";
 import Card from "../../components/card/Card";
-import { Link } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import Carousel from "react-material-ui-carousel";
+import useFetch from "../../hooks/useFetch";
+import Section from "../../components/section/Section";
 
 export default function Artist() {
     const [colors, setColors] = useState([]);
@@ -28,8 +24,34 @@ export default function Artist() {
     const [selectedChipThirdPanel, setSelectedChipThirdPanel] = useState("0");
     const [selectedChipFourthPanel, setSelectedChipFourthPanel] = useState("0");
     const [openModal, setOpenModal] = useState(false);
-    const [imgSrc, setImgSrc] = useState(null);
-    const imgArray = [img1, img2, img3, img4, img5];
+    const [imgSrc, setImgSrc] = useState("");
+
+    const location = useLocation();
+    const name = location.state?.name;
+    const params = useParams();
+    const artistId = params.id;
+    const { data: artistData, loading: artistLoading } = useFetch("/artists/find/" + artistId);
+    const { data: topSongsData, loading: topSongsLoading } = useFetch("/artists/" + artistId + "/top-songs?limit=10");
+    const { data: singleAndEpData } = useFetch("/artists/" + artistId + "/albums?include_groups=single,ep");
+    const { data: albumData } = useFetch("/artists/" + artistId + "/albums?include_groups=album");
+    const { data: appearsOnData } = useFetch("/artists/" + artistId + "/albums?include_groups=appears_on");
+    const [avatar, setAvatar] = useState("");
+    const [bg, setBg] = useState("");
+    const isTouchDevice = window.matchMedia("(pointer: coarse)").matches;
+
+    useEffect(() => {
+        if (artistData) {
+            setAvatar("");
+            setBg("");
+            artistData?.images?.forEach((image) => {
+                if (image.type === "avatar") {
+                    setAvatar(image.src);
+                } else if (image.type === "") {
+                    setBg(image.src);
+                }
+            });
+        }
+    }, [artistData]);
 
     useEffect(() => {
         const artistHeader = document.querySelector(".artist-background");
@@ -39,8 +61,9 @@ export default function Artist() {
     }, [colors]);
 
     useEffect(() => {
-        document.title = "Name of artist - Artist";
-    }, []);
+        setValueTab("0");
+        document.title = (name ? name : artistData?.name ? artistData.name : "Name") + " - Artist";
+    }, [name, artistData]);
 
     // const handleTabChange = (e, value) => {
     //     setValueTab(value);
@@ -53,36 +76,69 @@ export default function Artist() {
     const handleClick = (img) => {
         setOpenModal(true);
         setImgSrc(img);
-    }
+    };
+
+    const sortNewestReleased = (array) => {
+        const tempArr = [...array];
+        tempArr.sort((a, b) => {
+            return new Date(b.release_date) - new Date(a.release_date);
+        });
+        return tempArr;
+    };
+
+    const sortOldestReleased = (array) => {
+        const tempArr = [...array];
+        tempArr.sort((a, b) => {
+            return new Date(a.release_date) - new Date(b.release_date);
+        });
+        return tempArr;
+    };
 
     return (
         <div className="artist">
             <div className="artist-wrapper">
                 <div className="artist-top">
-                    <div className="artist-background">
-                        <ColorExtractor getColors={(colors) => { setColors(colors) }} >
-                            <img src={img} alt="Background of artist" />
-                        </ColorExtractor>
+                    <div className={`artist-background ${!bg ? "noBg" : "bg"} ${artistLoading && "loading"}`}>
+                        {artistLoading
+                            ? <Skeleton variant="rounded" className="skeleton" />
+                            : <>
+                                <ColorExtractor getColors={(colors) => { setColors(colors) }} >
+                                    <img src={bg ? bg : avatar} alt={`Hình nền của ${artistData?.name}`} />
+                                </ColorExtractor>
+                                <div className="no-background"></div>
+                            </>}
                     </div>
                     <div className="artist-header">
                         <div className="left">
                             <div className="first">
                                 <div className="artist-avatar">
-                                    <img src={img} alt="Avatar of artist" />
+                                    {artistLoading
+                                        ? <Skeleton variant="circular" className="skeleton" />
+                                        :
+                                        <img src={avatar} alt={`Avatar của ${artistData?.name}`} />
+                                    }
                                 </div>
                             </div>
                             <div className="second">
                                 <div className="artist-name">
-                                    <h3 className="text">Artist's name</h3>
+                                    <h3 className="text">
+                                        {artistLoading
+                                            ? <Skeleton variant="text" className="skeleton" width={100} />
+                                            : artistData?.name}
+                                    </h3>
                                 </div>
                                 <div className="artist-listeners">
-                                    <span className="text">3,000,000 lượt nghe mỗi tháng</span>
+                                    <span className="text">
+                                        {artistLoading
+                                            ? <Skeleton variant="text" className="skeleton" width={200} />
+                                            : "3,000,000 lượt nghe mỗi tháng"}
+                                    </span>
                                 </div>
                             </div>
                         </div>
                         <div className="right">
-                            <PlayAllArtistSongsButton />
-                            <FollowArtistButton />
+                            <PlayAllArtistSongsButton id={artistData?._id} />
+                            <FollowArtistButton id={artistData?._id} />
                         </div>
                     </div>
                 </div>
@@ -92,76 +148,54 @@ export default function Artist() {
                             <h3 className="title-text">Các bài hát phổ biến</h3>
                         </div>
                         <div className="songs" >
-                            <SongTable type="artist" />
+                            <SongTable type="artist" songs={topSongsData} loading={topSongsLoading} />
                         </div>
                     </section>
                     <section className="tabs" >
                         <TabContext value={valueTab}>
                             <Box sx={{ borderBottom: 1, borderColor: "#96969650" }} className="tablist-box">
                                 <TabList
-                                    variant="fullWidth"
-                                    scrollButtons="auto"
+                                    variant="scrollable"
+                                    allowScrollButtonsMobile
                                     textColor="inherit"
                                     onChange={(_, value) => setValueTab(value)}
                                     className="tablist"
                                 >
                                     <Tab value="0" label="Bản phát hành" className="tab" />
-                                    <Tab value="1" label="Single & EP" className="tab" />
-                                    <Tab value="2" label="Album" className="tab" />
-                                    <Tab value="3" label="Xuất hiện trong" className="tab" />
+                                    {singleAndEpData?.length > 0 &&
+                                        <Tab value="1" label="Single & EP" className="tab" />
+                                    }
+                                    {albumData?.length > 0 &&
+                                        <Tab value="2" label="Album" className="tab" />
+                                    }
+                                    {appearsOnData?.length > 0 &&
+                                        <Tab value="3" label="Xuất hiện trong" className="tab" />
+                                    }
                                     <Tab value="4" label="Về nghệ sĩ" className="tab" />
                                 </TabList>
                             </Box>
                             <div className="tab-panels">
                                 <TabPanel value="0" className="tab-panel first" >
-                                    <section className="popular-releases">
-                                        <div className="title-section">
-                                            <h4 className="title-text">Phổ biến</h4>
-                                        </div>
-                                        <div className="cards">
-                                            {[...Array(5)].map((_, index) => (
-                                                <div className="wrapper-item">
-                                                    <div className="item">
-                                                        <Link to={`/albums/${index}`}>
-                                                            <Card key={index} type="album" />
-                                                        </Link>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </section>
-                                    <section className="single-ep">
-                                        <div className="title-section">
-                                            <h4 className="title-text">Single & EP</h4>
-                                        </div>
-                                        <div className="cards">
-                                            {[...Array(5)].map((_, index) => (
-                                                <div className="wrapper-item">
-                                                    <div className="item">
-                                                        <Link to={`/albums/${index}`}>
-                                                            <Card key={index} type="album" />
-                                                        </Link>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </section>
-                                    <section className="album">
-                                        <div className="title-section">
-                                            <h4 className="title-text">Album</h4>
-                                        </div>
-                                        <div className="cards">
-                                            {[...Array(5)].map((_, index) => (
-                                                <div className="wrapper-item">
-                                                    <div className="item">
-                                                        <Link to={`/albums/${index}`}>
-                                                            <Card key={index} type="album" />
-                                                        </Link>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </section>
+                                    <Section
+                                        title="Phổ biến"
+                                        url={"/artists/" + artistId + "/albums?limit="}
+                                        type="album"
+                                    />
+                                    <Section
+                                        title="Single & EP"
+                                        url={"/artists/" + artistId + "/albums?include_groups=single,ep&limit="}
+                                        type="album"
+                                    />
+                                    <Section
+                                        title="Album"
+                                        url={"/artists/" + artistId + "/albums?include_groups=album&limit="}
+                                        type="album"
+                                    />
+                                    <Section
+                                        title="Xuất hiện trong"
+                                        url={"/artists/" + artistId + "/albums?include_groups=appears_on&limit="}
+                                        type="album"
+                                    />
                                 </TabPanel>
                                 <TabPanel value="1" className="tab-panel second">
                                     <div className="chips">
@@ -185,43 +219,22 @@ export default function Artist() {
                                         />
                                     </div>
                                     <div className="contents">
-                                        <div className="cards">
+                                        <div className="cards custom">
                                             {selectedChipSecondPanel === "0"
-                                                ?
-                                                <>
-                                                    {[...Array(10)].map((_, index) => (
-                                                        <div className="wrapper-item">
-                                                            <div className="item">
-                                                                <Link to={`/albums/${index}`}>
-                                                                    <Card key={index} type="album" />
-                                                                </Link>
-                                                            </div>
-                                                        </div>
+                                                ? <>
+                                                    {sortNewestReleased(singleAndEpData)?.map((item) => (
+                                                        <Card key={item._id} type="album" item={item} />
                                                     ))}
                                                 </>
                                                 : selectedChipSecondPanel === "1"
-                                                    ?
-                                                    <>
-                                                        {[...Array(5)].map((_, index) => (
-                                                            <div className="wrapper-item">
-                                                                <div className="item">
-                                                                    <Link to={`/albums/${index}`}>
-                                                                        <Card key={index} type="album" />
-                                                                    </Link>
-                                                                </div>
-                                                            </div>
+                                                    ? <>
+                                                        {singleAndEpData?.map((item) => (
+                                                            <Card key={item._id} type="album" item={item} />
                                                         ))}
                                                     </>
-                                                    :
-                                                    <>
-                                                        {[...Array(5)].map((_, index) => (
-                                                            <div className="wrapper-item">
-                                                                <div className="item">
-                                                                    <Link to={`/albums/${index}`}>
-                                                                        <Card key={index} type="album" />
-                                                                    </Link>
-                                                                </div>
-                                                            </div>
+                                                    : <>
+                                                        {sortOldestReleased(singleAndEpData)?.map((item) => (
+                                                            <Card key={item._id} type="album" item={item} />
                                                         ))}
                                                     </>
                                             }
@@ -250,43 +263,22 @@ export default function Artist() {
                                         />
                                     </div>
                                     <div className="contents">
-                                        <div className="cards">
+                                        <div className="cards custom">
                                             {selectedChipThirdPanel === "0"
-                                                ?
-                                                <>
-                                                    {[...Array(10)].map((_, index) => (
-                                                        <div className="wrapper-item">
-                                                            <div className="item">
-                                                                <Link to={`/albums/${index}`}>
-                                                                    <Card key={index} type="album" />
-                                                                </Link>
-                                                            </div>
-                                                        </div>
+                                                ? <>
+                                                    {sortNewestReleased(albumData)?.map((item) => (
+                                                        <Card key={item._id} type="album" item={item} />
                                                     ))}
                                                 </>
                                                 : selectedChipThirdPanel === "1"
-                                                    ?
-                                                    <>
-                                                        {[...Array(5)].map((_, index) => (
-                                                            <div className="wrapper-item">
-                                                                <div className="item">
-                                                                    <Link to={`/albums/${index}`}>
-                                                                        <Card key={index} type="album" />
-                                                                    </Link>
-                                                                </div>
-                                                            </div>
+                                                    ? <>
+                                                        {albumData?.map((item) => (
+                                                            <Card key={item._id} type="album" item={item} />
                                                         ))}
                                                     </>
-                                                    :
-                                                    <>
-                                                        {[...Array(5)].map((_, index) => (
-                                                            <div className="wrapper-item">
-                                                                <div className="item">
-                                                                    <Link to={`/albums/${index}`}>
-                                                                        <Card key={index} type="album" />
-                                                                    </Link>
-                                                                </div>
-                                                            </div>
+                                                    : <>
+                                                        {sortOldestReleased(albumData)?.map((item) => (
+                                                            <Card key={item._id} type="album" item={item} />
                                                         ))}
                                                     </>
                                             }
@@ -315,43 +307,25 @@ export default function Artist() {
                                         />
                                     </div>
                                     <div className="contents">
-                                        <div className="cards">
+                                        <div className="cards custom">
                                             {selectedChipFourthPanel === "0"
                                                 ?
                                                 <>
-                                                    {[...Array(10)].map((_, index) => (
-                                                        <div className="wrapper-item">
-                                                            <div className="item">
-                                                                <Link to={`/playlists/${index}`}>
-                                                                    <Card key={index} type="playlist" />
-                                                                </Link>
-                                                            </div>
-                                                        </div>
+                                                    {sortNewestReleased(appearsOnData)?.map((item) => (
+                                                        <Card key={item._id} type="album" item={item} />
                                                     ))}
                                                 </>
                                                 : selectedChipFourthPanel === "1"
                                                     ?
                                                     <>
-                                                        {[...Array(5)].map((_, index) => (
-                                                            <div className="wrapper-item">
-                                                                <div className="item">
-                                                                    <Link to={`/playlists/${index}`}>
-                                                                        <Card key={index} type="playlist" />
-                                                                    </Link>
-                                                                </div>
-                                                            </div>
+                                                        {appearsOnData?.map((item) => (
+                                                            <Card key={item._id} type="album" item={item} />
                                                         ))}
                                                     </>
                                                     :
                                                     <>
-                                                        {[...Array(5)].map((_, index) => (
-                                                            <div className="wrapper-item">
-                                                                <div className="item">
-                                                                    <Link to={`/playlists/${index}`}>
-                                                                        <Card key={index} type="playlist" />
-                                                                    </Link>
-                                                                </div>
-                                                            </div>
+                                                        {sortOldestReleased(appearsOnData)?.map((item) => (
+                                                            <Card key={item._id} type="album" item={item} />
                                                         ))}
                                                     </>
                                             }
@@ -368,9 +342,9 @@ export default function Artist() {
                                             duration="500"
                                             className="carousel"
                                         >
-                                            {imgArray.map((img) => (
-                                                <div className="wrapper-img" onClick={() => handleClick(img)}>
-                                                    <img src={img} alt="Artist's img" />
+                                            {artistData?.images?.map((img) => (
+                                                <div className="wrapper-img" onClick={() => { !isTouchDevice && handleClick(img.src) }} key={artistData?._id}>
+                                                    <img src={img.src} alt="Artist's img" />
                                                 </div>
                                             ))}
                                         </Carousel>
@@ -394,7 +368,7 @@ export default function Artist() {
                                         <div className="artist-info-left">
                                             <div className="wrapper-left">
                                                 <section className="followers">
-                                                    <p className="number">1,320,651</p>
+                                                    <p className="number">{(1023090 + artistData?.followers?.length).toLocaleString('en-US')}</p>
                                                     <p className="title">Nguời theo dõi</p>
                                                 </section>
                                                 <section className="monthly-listeners">

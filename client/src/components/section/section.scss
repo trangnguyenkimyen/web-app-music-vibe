@@ -1,0 +1,66 @@
+section {
+    margin-bottom: 45px;
+
+    .title {
+        margin-bottom: 20px;
+        display: flex;
+        align-items: last baseline;
+        justify-content: space-between;
+
+        .title-text {
+            a {
+                cursor: pointer;
+            }
+        }
+
+        .expanded {
+            font-size: 13px;
+            font-weight: 600;
+            color: #cccccc;
+            cursor: pointer;
+            padding-right: 20px;
+        }
+    }
+
+    .cards {
+        display: flex;
+        // flex-wrap: wrap;
+        align-items: center;
+    }
+}
+
+// Thiet bi khong phai cam ung
+@media (hover: hover) and (pointer: fine) {
+    section {
+        .title {
+            .title-text {
+                a {
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
+            }
+
+            .expanded {
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+}
+
+// XS
+@media only screen and (max-width: 575px) {
+    section {
+        .title {
+            .expanded {
+                padding-right: 0;
+            }
+        }
+
+        .cards {
+            overflow-x: auto;
+        }
+    }
+}

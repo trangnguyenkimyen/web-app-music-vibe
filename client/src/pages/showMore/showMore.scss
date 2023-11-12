@@ -13,11 +13,28 @@
             align-items: center;
 
             .wrapper-item {
-                width: 20%;
-
                 .item {
-                    padding-right: 20px;
                     padding-bottom: 40px;
+                }
+            }
+
+        }
+    }
+}
+
+// XS
+@media only screen and (max-width: 575px) {
+    .show-more {
+        .show-more-wrapper {
+            padding-bottom: 136px;
+
+            .cards {
+                justify-content: space-between;
+
+                .wrapper-item {
+                    .item {
+                        margin-right: 0;
+                    }
                 }
             }
         }

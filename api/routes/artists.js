@@ -21,7 +21,7 @@ router.get("/", getAllArtists);
 // Get artist's albums
 router.get("/:id/albums", validObjectId, getArtistAlbum);
 // Get artist's top songs
-router.get("/:id/top-songs", validObjectId, getArtistTopSongs);
+router.get("/:id/top-songs", [validObjectId, validLimit], getArtistTopSongs);
 // Get artist's related artists
 router.get("/:id/related-artists", [validLimit, validObjectId], getRelatedArtists);
 // Get popular artists

@@ -8,21 +8,21 @@ import { useState } from "react";
 import EditDialog from "../dialog/editDialog/EditDialog";
 import DeleteDialog from "../dialog/deleteDialog/DeleteDialog";
 
-export default function PlaylistItem({ img }) {
+export default function PlaylistItem({ item }) {
     const [openDialogEdit, setOpenDialogEdit] = useState(false);
     const [openDialogDelete, setOpenDialogDelete] = useState(false);
 
     return (
         <div className="playlist-item">
             <div className="playlist-item-wrapper">
-                <Link to="/playlists/1">
+                <Link to={`/playlists/${item?._id}`}>
                     <div className="playlist-item-left">
                         <div className="playlist-img">
-                            <img src={img ? img : imgSrc} alt="Playlist's img" />
+                            <img src={item?.images[0] ? item?.images[0] : imgSrc} alt={item?.name} />
                         </div>
                         <div className="playlist-info">
-                            <p className="name">Playlist name</p>
-                            <p className="owner">Owner's name</p>
+                            <p className="name">{item?.name}</p>
+                            <p className="type">{item?.public ? "Công khai" : "Riêng tư"}</p>
                         </div>
                     </div>
                 </Link>
@@ -42,11 +42,12 @@ export default function PlaylistItem({ img }) {
                     <EditDialog
                         openDialogEdit={openDialogEdit}
                         setOpenDialogEdit={setOpenDialogEdit}
-                        img={img}
+                        item={item}
                     />
                     <DeleteDialog
                         openDialogDelete={openDialogDelete}
                         setOpenDialogDelete={setOpenDialogDelete}
+                        item={item}
                     />
                 </div>
             </div>

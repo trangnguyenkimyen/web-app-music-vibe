@@ -7,12 +7,76 @@
     left: 0;
     background-color: #010A19;
 
+    &.expanded {
+        flex: 3;
+
+        .hamburger-menu {
+            .menu-line {
+                &:first-child {
+                    top: 14px;
+                    transform: translateY(-50%) rotate(-135deg);
+                }
+
+                &:nth-child(2) {
+                    opacity: 0;
+                }
+
+                &:nth-child(3) {
+                    top: 14px;
+                    transform: translateY(-50%) rotate(-45deg);
+                }
+            }
+        }
+
+        .sidebar-button {
+            .sidebar-icon {
+                margin-right: 10px;
+            }
+
+            .sidebar-text {
+                opacity: 1;
+            }
+        }
+    }
+
     .logo {
         width: 84px;
         height: auto;
         margin-bottom: 15px;
         padding-left: 10px;
         cursor: pointer;
+    }
+
+    .hamburger-menu {
+        display: none;
+        width: 18px;
+        height: 28px;
+        margin: 10px;
+        box-sizing: border-box;
+        position: relative;
+        cursor: pointer;
+
+        .menu-line {
+            width: 18px;
+            height: 2px;
+            background: white;
+            border-radius: 3px;
+            opacity: 1;
+            position: absolute;
+            transition-duration: .3s;
+
+            &:first-child {
+                top: 5px;
+            }
+
+            &:nth-child(2) {
+                top: 13px;
+            }
+
+            &:nth-child(3) {
+                top: 21px;
+            }
+        }
     }
 
     .sidebar-divider {
@@ -64,3 +128,75 @@
         }
     }
 }
+
+// XS
+@media only screen and (max-width: 575px) {
+    .sidebar {
+        height: auto;
+        width: 100vw;
+        position: fixed;
+        top: auto;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        z-index: 33333;
+
+        .link-logo {
+            display: none;
+        }
+
+        .sidebar-button {
+            flex: 1;
+
+            .sidebar-text {
+                display: none;
+            }
+        }
+
+        .sidebar-divider {
+            display: none;
+        }
+    }
+}
+
+// SM & MD
+@media only screen and (min-width: 576px) and (max-width: 992px) {
+    .sidebar {
+        flex: 0.6;
+        transition: flex .3s ease;
+        overflow: hidden;
+
+        .link-logo {
+            display: none;
+        }
+
+        .hamburger-menu {
+            display: block;
+        }
+
+        .sidebar-button {
+            .sidebar-text {
+                opacity: 0;
+                text-wrap: nowrap;
+                transition: opacity .15s ease-in;
+            }
+        }
+    }
+}
+
+// SM
+@media only screen and (min-width: 576px) and (max-width: 768px) {}
+
+// MD
+@media only screen and (min-width: 769px) and (max-width: 992px) {}
+
+// LG
+@media only screen and (min-width: 993px) and (max-width: 1200px) {}
+
+// XL
+@media only screen and (min-width: 1201px) and (max-width: 1400px) {}
+
+// XXL
+@media only screen and (min-width: 1401px) {}

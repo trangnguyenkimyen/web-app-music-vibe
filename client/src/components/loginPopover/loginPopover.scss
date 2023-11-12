@@ -1,0 +1,55 @@
+.login-popover {
+    background-color: #4361EE;
+    padding: 15px;
+    color: white;
+
+    .content {
+        h4 {
+            font-size: 16px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+    }
+
+    .buttons {
+        display: flex;
+        justify-content: flex-end;
+
+        button {
+            background: none;
+            border: none;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+
+            &.exit {
+                margin-right: 15px;
+                color: #cccccc;
+                transition: color .1s ease, scale .1s ease;
+
+                &:hover {
+                    color: white;
+                    scale: 1.1;
+                }
+            }
+
+            &.log-in {
+                border-radius: 30px;
+                background-color: white;
+                padding: 10px;
+                transition: scale .1s ease;
+
+                &:hover {
+                    scale: 1.05;
+                }
+            }
+        }
+    }
+}

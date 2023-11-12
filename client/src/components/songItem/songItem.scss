@@ -6,73 +6,6 @@
     padding: 8px;
     border-radius: 6px;
 
-    &:focus,
-    &:focus-within,
-    &:hover {
-        .left {
-            .songItem-img {
-                img {
-                    filter: brightness(0.6);
-                }
-
-                .button {
-                    .icon {
-                        opacity: 1;
-                    }
-                }
-
-                .music-wave {
-                    opacity: 0;
-                }
-            }
-
-            .songItem-info {
-                .artists {
-                    span {
-                        &:not(.comma) {
-                            color: white;
-                        }
-                    }
-                }
-            }
-        }
-
-        .right {
-            .like-button {
-                .icon {
-                    &.liked {
-                        opacity: 1;
-                    }
-                }
-            }
-
-            .listeners {
-
-                .text,
-                .icon {
-                    color: white;
-                }
-            }
-
-            .more {
-                .button {
-                    .icon {
-                        color: white;
-                    }
-                }
-            }
-        }
-    }
-
-    &:focus,
-    &:focus-within {
-        background-color: #9696968a;
-    }
-
-    &:not(:focus, :focus-within):hover {
-        background-color: #38393ba8;
-    }
-
     &.played {
         .left {
             .songItem-info {
@@ -140,16 +73,11 @@
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
-
-                &:hover {
-                    text-decoration: underline;
-                }
             }
 
             .artists {
                 font-size: 12px;
                 font-weight: 500;
-                color: #cccccc;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
@@ -157,10 +85,7 @@
 
                 span {
                     cursor: pointer;
-
-                    &:not(.comma):hover {
-                        text-decoration: underline;
-                    }
+                    color: #cccccc;
                 }
             }
         }
@@ -172,34 +97,41 @@
         align-items: center;
         justify-content: space-between;
 
-        .like-button {
+        .like-btn {
             flex: 5;
             padding: 8px;
             display: flex;
             align-items: center;
+            justify-content: center;
+            font-size: 22px;
 
-            .icon {
-                font-size: 22px;
-                cursor: pointer;
+            // .wrapper-like-btn {
+            //     display: flex;
+            //     align-items: center;
 
-                &.unliked {
-                    color: #EFFE62;
+            //     .icon {
+            //         font-size: 22px;
+            //         cursor: pointer;
 
-                    &:hover {
-                        opacity: 0.8;
-                    }
-                }
+            //         &.unliked {
+            //             color: #EFFE62;
 
-                &.liked {
-                    color: #969696;
-                    opacity: 0;
-                    transition: color .1s ease;
+            //             &:hover {
+            //                 opacity: 0.8;
+            //             }
+            //         }
 
-                    &:hover {
-                        color: white;
-                    }
-                }
-            }
+            //         &.liked {
+            //             color: #969696;
+            //             // opacity: 0;
+            //             transition: color .1s ease;
+
+            //             &:hover {
+            //                 color: white;
+            //             }
+            //         }
+            //     }
+            // }
         }
 
         .listeners {
@@ -225,6 +157,126 @@
 
         .more {
             flex: 3;
+        }
+    }
+}
+
+// Thiet bi khong phai cam ung
+@media (hover: hover) and (pointer: fine) {
+    .songItem {
+
+        &:focus,
+        &:focus-within,
+        &:hover {
+            .left {
+                .songItem-img {
+                    img {
+                        filter: brightness(0.6);
+                    }
+
+                    .button {
+                        .icon {
+                            opacity: 1;
+                        }
+                    }
+
+                    .music-wave {
+                        opacity: 0;
+                    }
+                }
+
+                .songItem-info {
+                    .artists {
+                        span {
+                            &:not(.comma) {
+                                color: white;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .right {
+                .like-btn {
+                    .icon {
+                        &.liked {
+                            opacity: 1;
+                        }
+                    }
+                }
+
+                .listeners {
+
+                    .text,
+                    .icon {
+                        color: white;
+                    }
+                }
+
+                .more {
+                    .button {
+                        .icon {
+                            color: white;
+                        }
+                    }
+                }
+            }
+        }
+
+        &:focus,
+        &:focus-within {
+            background-color: #9696968a;
+        }
+
+        &:not(:focus, :focus-within):hover {
+            background-color: #38393ba8;
+        }
+
+        .left {
+            .songItem-info {
+                .name {
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
+
+                .artists {
+                    span {
+                        &:not(.comma):hover {
+                            text-decoration: underline;
+                        }
+                    }
+                }
+            }
+        }
+
+        .right {
+            .like-btn {
+                .icon {
+                    &.liked {
+                        opacity: 0;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// XS
+@media only screen and (max-width: 575px) {
+    .songItem {
+        .left {
+            flex: 9;
+            margin-right: 20px;
+        }
+
+        .right {
+            flex: 3;
+            justify-content: flex-end;
+
+            .like-btn {
+                display: none;
+            }
         }
     }
 }

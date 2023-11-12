@@ -31,7 +31,7 @@ const AlbumSchema = new mongoose.Schema({
         required: true,
         default: "album",
         enum: ["album"]
-    },
+    }
 }, {
     timestamps: true,
 });

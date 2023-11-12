@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vibe</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&family=Roboto:ital,wght@0,100;0,300;0,400;0,700;0,900;1,500&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            color: #050505;
+        }
+
+        body {
+            width: 100%;
+            background-color: #f9f9f9;
+        }
+
+        table {
+            border-collapse: separate;
+            width: 100%;
+            min-width: 640px;
+            background-color: rgb(250, 250, 250);
+            margin: 0;
+            padding: 0;
+        }
+
+        tbody {
+            display: table-row-group;
+            vertical-align: middle;
+            border-color: inherit;
+        }
+
+        tr {
+            display: table-row;
+            vertical-align: middle;
+            border-color: inherit;
+        }
+
+        table td {
+            font-family: 'Montserrat', 'Roboto', sans-serif;
+            font-size: 16px;
+            vertical-align: top;
+        }
+
+        .line {
+            height: 4px;
+            font-size: 4px;
+            line-height: 4px;
+            background-color: #010A19;
+        }
+
+        .logo {
+            text-align: center;
+            padding: 25px 0;
+        }
+
+        .container {
+            display: block;
+            max-width: 640px;
+            height: 100%;
+            padding: 0 24px 48px;
+            margin: 0 auto !important;
+            background-color: #f9f9f9;
+        }
+
+        .content {
+            display: block;
+            margin: 0 auto;
+            padding-bottom: 48px;
+            background-color: #ffffff;
+            overflow: hidden;
+        }
+
+        img {
+            height: 60px;
+            margin-bottom: -15px;
+        }
+
+        hr {
+            margin: 42px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        h1 {
+            font-size: 24px;
+        }
+
+        .button {
+            padding: 10px 25px;
+            border-radius: 10px;
+            background-color: #EFFE62;
+            font-weight: 500;
+            text-decoration: none;
+            color: #050505 !important;
+            font-family: inherit;
+        }
+
+        .link a {
+            color: #f26725 !important;
+            font-size: inherit;
+        }
+
+        p {
+            font-weight: 400;
+        }
+
+        .main-content p {
+            margin: 24px 0;
+        }
+
+        .foot-note p {
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <table>
+        <tbody>
+            <tr>
+                <td class="line"></td>
+            </tr>
+            <tr>
+                <td class="logo">
+                    <a href="http://localhost:3000">
+                        <img src="https://res.cloudinary.com/dmtcuxsce/image/upload/v1698820352/upload/svg/defaultAvatar_r3zdkm.png"
+                            alt="Logo vibe">
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td class="container">
+                                    <div class="content">
+                                        <div class="main-content">
+                                            <h1>Xác nhận email của bạn để sử dụng ứng dụng vibe</h1>
+                                            <p>Xin chào! Cảm ơn vì đã sử dụng ứng dụng vibe, hãy nhấp vào nút bên dưới
+                                                để
+                                                xác
+                                                nhận
+                                                email
+                                                này.
+                                            </p>
+                                            <a href="{{url}}" class="button">
+                                                Xác nhận Email
+                                            </a>
+                                        </div>
+                                        <hr>
+                                        <div class="foot-note">
+                                            <p>
+                                                <b>Bạn không thấy nút nào?</b> Dán liên kết sau vào trong trình duyệt
+                                                của
+                                                bạn:
+                                            </p>
+                                            <p class="link">{{url}}</p>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+</html>

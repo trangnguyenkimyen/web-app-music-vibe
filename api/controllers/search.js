@@ -28,12 +28,22 @@ const searchForItems = async (req, res, next) => {
 
         type = type.split(",");
         if (type.includes("album")) {
-            const albums_name = await Album.find({
-                name: { $regex: '.*' + q + '.*' }
-            });
-            const albums_genre = await Album.find({
-                genres: { $regex: '.*' + q + '.*' }
-            });
+            const albums_name = await Album
+                .find({
+                    name: { $regex: '.*' + q + '.*', $options: 'i' }
+                })
+                .populate({
+                    path: "artists",
+                    select: "name"
+                });
+            const albums_genre = await Album
+                .find({
+                    genres: { $regex: '.*' + q + '.*', $options: 'i' }
+                })
+                .populate({
+                    path: "artists",
+                    select: "name"
+                });
             if (albums_name) albums.push(albums_name);
             if (albums_genre) albums.push(albums_genre);
             albums = albums.flatMap(item => item).slice(offset, limit);
@@ -41,7 +51,7 @@ const searchForItems = async (req, res, next) => {
         if (type.includes("artist")) {
             artists = await Artist
                 .find({
-                    name: { $regex: '.*' + q + '.*' }
+                    name: { $regex: '.*' + q + '.*', $options: 'i' }
                 })
                 .skip(offset)
                 .limit(limit);
@@ -49,7 +59,16 @@ const searchForItems = async (req, res, next) => {
         if (type.includes("song")) {
             songs = await Song
                 .find({
-                    name: { $regex: '.*' + q + '.*' },
+                    name: { $regex: '.*' + q + '.*', $options: 'i' },
+                })
+                .collation({ locale: "vi", strength: 1 })
+                .populate({
+                    path: "album",
+                    select: "name images"
+                })
+                .populate({
+                    path: "artists",
+                    select: "name"
                 })
                 .skip(offset)
                 .limit(limit);
@@ -57,7 +76,7 @@ const searchForItems = async (req, res, next) => {
         if (type.includes("playlist")) {
             playlists = await Playlist
                 .find({
-                    name: { $regex: '.*' + q + '.*' },
+                    name: { $regex: '.*' + q + '.*', $options: 'i' },
                     public: true,
                 })
                 .skip(offset)
@@ -66,7 +85,7 @@ const searchForItems = async (req, res, next) => {
         if (type.includes("profile")) {
             profiles = await User
                 .find({
-                    name: { $regex: '.*' + q + '.*' }
+                    name: { $regex: '.*' + q + '.*', $options: 'i' }
                 })
                 .select("name img")
                 .skip(offset)

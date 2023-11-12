@@ -1,11 +1,22 @@
+import { Skeleton } from "@mui/material";
 import Card from "../../components/card/Card";
+import useFetch from "../../hooks/useFetch";
 import "./showMore.scss";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
 export default function ShowMore() {
     const location = useLocation();
     const currentPath = decodeURIComponent(location.pathname);
     const sectionName = currentPath.split("/")[2];
+    const url = location.state.url;
+    const type = location.state.type;
+    const limit = 20;
+    const { data, loading } = useFetch(url + limit);
+
+    useEffect(() => {
+        document.title = sectionName;
+    }, [sectionName]);
 
     return (
         <div className="show-more">
@@ -14,15 +25,22 @@ export default function ShowMore() {
                     {sectionName}
                 </h3>
                 <div className="cards">
-                    {[...Array(12)].map((_, index) => (
-                        <div className="wrapper-item">
-                            <div className="item">
-                                <Link to={`/playlists/${index}`}>
-                                    <Card key={index} type="playlist" />
-                                </Link>
-                            </div>
-                        </div>
-                    ))}
+                    {loading
+                        ? <>
+                            {[...Array(5)].map((_, index) => (
+                                <div className="wrapper-item" key={index}>
+                                    <div className="item">
+                                        <Skeleton variant="rounded" className="card skeleton" />
+                                    </div>
+                                </div>
+                            ))}
+                        </>
+                        : <>
+                            {data.map((item, index) => (
+                                <Card key={index} type={type || item.type} item={item} />
+                            ))}
+                        </>
+                    }
                 </div>
             </div>
         </div>

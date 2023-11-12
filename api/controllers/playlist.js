@@ -19,7 +19,7 @@ const createPlaylist = async (req, res, next) => {
             $push: { playlists: savedPlaylist._id }
         });
 
-        res.status(200).json("Create successfully!");
+        res.status(200).json(savedPlaylist);
     } catch (err) {
         next(err);
     }
@@ -76,7 +76,7 @@ const deletePlaylist = async (req, res, next) => {
         const playlistId = req.params.id;
         const playlist = await Playlist.findById(playlistId);
 
-        if (playlist.owner !== req.user.id && !req.user.isAdmin) {
+        if (playlist.owner != req.user.id && !req.user.isAdmin) {
             return next(createError(403, "You don't have authorized"));
         }
 
@@ -99,9 +99,21 @@ const getPlaylist = async (req, res, next) => {
             .findById(req.params.id)
             .populate({
                 path: "owner",
-                select: "name img",
+                select: "name img isAdmin",
             })
-            .populate("songs");
+            .populate({
+                path: "songs",
+                populate: [
+                    {
+                        path: "artists",
+                        select: "name"
+                    },
+                    {
+                        path: "album",
+                        select: "name images"
+                    }
+                ]
+            });
         res.status(200).json(playlist);
     } catch (err) {
         next(err);
@@ -159,7 +171,7 @@ const getPlaylistSongs = async (req, res, next) => {
                     },
                     {
                         path: "album",
-                        select: "name",
+                        select: "name images",
                     }
                 ],
                 options: { skip: offset, limit: limit },
@@ -183,10 +195,12 @@ const getPopularPlaylists = async (req, res, next) => {
                 $group: {
                     _id: "$_id",
                     name: { "$first": "$name" },
+                    images: { "$first": "$images" },
+                    desc: { "$first": "$desc" },
                     followersCount: { "$sum": 1 },
                 }
             },
-            { $sort: { followersCount: -1 } },
+            { $sort: { followersCount: -1, _id: 1 } },
             { $skip: Number(offset) },
             { $limit: Number(limit) }
         ]);
@@ -216,9 +230,7 @@ const getPlaylistByCategory = async (req, res, next) => {
             .skip(offset)
             .limit(limit);
 
-        const total = playlists.length;
-
-        res.status(200).json({ total, playlists });
+        res.status(200).json(playlists);
     } catch (err) {
         next(err);
     }
