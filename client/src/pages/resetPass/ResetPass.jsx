@@ -23,7 +23,7 @@ export default function ResetPass() {
         if (token) {
             const verifyToken = async () => {
                 try {
-                    const res = await axios.get("/auth/reset-password/" + token);
+                    const res = await axios.get(process.env.REACT_APP_API_URL + "/auth/reset-password/" + token);
                     setEmail(res.data);
                 } catch (error) {
                     console.log(error);
@@ -42,7 +42,7 @@ export default function ResetPass() {
         e.preventDefault();
         try {
             setIsLoading(true);
-            await axios.put("/users/reset-pass/" + email, {
+            await axios.put(process.env.REACT_APP_API_URL + "/users/reset-pass/" + email, {
                 password: passRef?.current?.value
             });
             setOpenSuccess(true);

@@ -30,7 +30,7 @@ export default function Search() {
             setAdditionalSongsLoading(true);
             const loadAdditionalSongs = async () => {
                 const fetchData = async (url) => {
-                    const res = await axios.get(url);
+                    const res = await axios.get(process.env.REACT_APP_API_URL + url);
                     if (res.data.length > 0) {
                         const data = res.data;
                         setAdditionalSongsLoading(false);
@@ -101,27 +101,27 @@ export default function Search() {
 
             if (value === "1") {
                 setCurDataLoading(true);
-                const res = await axios.get("/search?q=" + q + "&type=artist&limit=20");
+                const res = await axios.get(process.env.REACT_APP_API_URL + "/search?q=" + q + "&type=artist&limit=20");
                 setCurData(oldData => [...oldData, ...res.data.artists]);
                 setCurDataLoading(false);
             } else if (value === "2") {
                 setCurDataLoading(true);
-                const res = await axios.get("/search?q=" + q + "&type=album&limit=20");
+                const res = await axios.get(process.env.REACT_APP_API_URL + "/search?q=" + q + "&type=album&limit=20");
                 setCurData(oldData => [...oldData, ...res.data.albums]);
                 setCurDataLoading(false);
             } else if (value === "3") {
                 setCurDataLoading(true);
-                const res = await axios.get("/search?q=" + q + "&type=song&limit=20");
+                const res = await axios.get(process.env.REACT_APP_API_URL + "/search?q=" + q + "&type=song&limit=20");
                 setCurData(oldData => [...oldData, ...res.data.songs]);
                 setCurDataLoading(false);
             } else if (value === "4") {
                 setCurDataLoading(true);
-                const res = await axios.get("/search?q=" + q + "&type=playlist&limit=20");
+                const res = await axios.get(process.env.REACT_APP_API_URL + "/search?q=" + q + "&type=playlist&limit=20");
                 setCurData(oldData => [...oldData, ...res.data.playlists]);
                 setCurDataLoading(false);
             } else if (value === "5") {
                 setCurDataLoading(true);
-                const res = await axios.get("/search?q=" + q + "&type=profile&limit=20");
+                const res = await axios.get(process.env.REACT_APP_API_URL + "/search?q=" + q + "&type=profile&limit=20");
                 setCurData(oldData => [...oldData, ...res.data.profiles]);
                 setCurDataLoading(false);
             }
@@ -130,35 +130,35 @@ export default function Search() {
 
     const loadMore = async (value) => {
         if (value === "1") {
-            const res = await axios.get("/search?q=" + q + "&type=artist&limit=20&offset=" + offset);
+            const res = await axios.get(process.env.REACT_APP_API_URL + "/search?q=" + q + "&type=artist&limit=20&offset=" + offset);
             if (res.data.length === 0) {
                 setHasMore(false);
                 return;
             }
             setCurData(oldData => [...oldData, ...res.data.artists]);
         } else if (value === "2") {
-            const res = await axios.get("/search?q=" + q + "&type=album&limit=20&offset=" + offset);
+            const res = await axios.get(process.env.REACT_APP_API_URL + "/search?q=" + q + "&type=album&limit=20&offset=" + offset);
             if (res.data.length === 0) {
                 setHasMore(false);
                 return;
             }
             setCurData(oldData => [...oldData, ...res.data.albums]);
         } else if (value === "3") {
-            const res = await axios.get("/search?q=" + q + "&type=song&limit=20&offset=" + offset);
+            const res = await axios.get(process.env.REACT_APP_API_URL + "/search?q=" + q + "&type=song&limit=20&offset=" + offset);
             if (res.data.length === 0) {
                 setHasMore(false);
                 return;
             }
             setCurData(oldData => [...oldData, ...res.data.songs]);
         } else if (value === "4") {
-            const res = await axios.get("/search?q=" + q + "&type=playlist&limit=20&offset=" + offset);
+            const res = await axios.get(process.env.REACT_APP_API_URL + "/search?q=" + q + "&type=playlist&limit=20&offset=" + offset);
             if (res.data.length === 0) {
                 setHasMore(false);
                 return;
             }
             setCurData(oldData => [...oldData, ...res.data.playlists]);
         } else if (value === "5") {
-            const res = await axios.get("/search?q=" + q + "&type=profile&limit=20&offset=" + offset);
+            const res = await axios.get(process.env.REACT_APP_API_URL + "/search?q=" + q + "&type=profile&limit=20&offset=" + offset);
             if (res.data.length === 0) {
                 setHasMore(false);
                 return;

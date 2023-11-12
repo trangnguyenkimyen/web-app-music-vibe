@@ -42,7 +42,7 @@ export default function EditDialog({ setOpenDialogEdit, openDialogEdit, item }) 
 
                 const { url } = uploadRes.data;
 
-                await axios.put("/playlists/" + item?._id, {
+                await axios.put(process.env.REACT_APP_API_URL + "/playlists/" + item?._id, {
                     name: playlistName,
                     desc: playlistDesc,
                     public: playlistType,
@@ -69,7 +69,7 @@ export default function EditDialog({ setOpenDialogEdit, openDialogEdit, item }) 
                     }
                 });
             } else {
-                await axios.put("/playlists/" + item?._id, {
+                await axios.put(process.env.REACT_APP_API_URL + "/playlists/" + item?._id, {
                     name: playlistName,
                     desc: playlistDesc,
                     public: playlistType,

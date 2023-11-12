@@ -42,7 +42,7 @@ export default function AddDialog({ setOpenDialogAdd, openDialogAdd }) {
 
                 const { url } = uploadRes.data;
 
-                const res = await axios.post("/playlists", {
+                const res = await axios.post(process.env.REACT_APP_API_URL + "/playlists", {
                     name: playlistName,
                     desc: playlistDesc,
                     public: playlistType,
@@ -63,7 +63,7 @@ export default function AddDialog({ setOpenDialogAdd, openDialogAdd }) {
                     }
                 });
             } else {
-                const res = await axios.post("/playlists", {
+                const res = await axios.post(process.env.REACT_APP_API_URL + "/playlists", {
                     name: playlistName,
                     desc: playlistDesc,
                     public: playlistType,

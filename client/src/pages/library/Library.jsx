@@ -22,7 +22,7 @@ export default function Library() {
     useEffect(() => {
         if (user) {
             const fetchData = async () => {
-                const res = await axios.get("/me/liked-songs");
+                const res = await axios.get(process.env.REACT_APP_API_URL + "/me/liked-songs");
                 setData(res.data);
                 setLoading(false);
             };
@@ -39,17 +39,17 @@ export default function Library() {
 
             if (value === "1") {
                 setCurDataLoading(true);
-                const res = await axios.get("/me/liked-albums");
+                const res = await axios.get(process.env.REACT_APP_API_URL + "/me/liked-albums");
                 setCurData(oldData => [...oldData, ...res.data]);
                 setCurDataLoading(false);
             } else if (value === "2") {
                 setCurDataLoading(true);
-                const res = await axios.get("/me/liked-playlists");
+                const res = await axios.get(process.env.REACT_APP_API_URL + "/me/liked-playlists");
                 setCurData(oldData => [...oldData, ...res.data]);
                 setCurDataLoading(false);
             } else if (value === "3") {
                 setCurDataLoading(true);
-                const res = await axios.get("/me/following?type=artist");
+                const res = await axios.get(process.env.REACT_APP_API_URL + "/me/following?type=artist");
                 setCurData(oldData => [...oldData, ...res.data]);
                 setCurDataLoading(false);
             }

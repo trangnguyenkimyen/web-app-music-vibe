@@ -73,17 +73,17 @@ export default function SongRow({ type, number, song, createdAt }) {
             let res = [];
             let data = [];
             if (type === "playlist") {
-                res = await axios.get("/playlists/find/" + itemId);
+                res = await axios.get(process.env.REACT_APP_API_URL + "/playlists/find/" + itemId);
                 data = res.data.songs;
             } else if (type === "album") {
-                res = await axios.get("/albums/find/" + itemId);
+                res = await axios.get(process.env.REACT_APP_API_URL + "/albums/find/" + itemId);
                 data = res.data.songs;
             } else if (type === "library") {
-                res = await axios.get("/me/liked-songs");
+                res = await axios.get(process.env.REACT_APP_API_URL + "/me/liked-songs");
                 data = res.data;
             }
             else {
-                res = await axios.get("/artists/" + itemId + "/top-songs?limit=10");
+                res = await axios.get(process.env.REACT_APP_API_URL + "/artists/" + itemId + "/top-songs?limit=10");
                 data = res.data;
             }
 

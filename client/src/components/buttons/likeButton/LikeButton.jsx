@@ -58,7 +58,7 @@ export default function LikeButton({ custom, type, itemId, playlist }) {
         if (user) {
             try {
                 if (type === "song") {
-                    const res = await axios.put("/me/songs/" + itemId);
+                    const res = await axios.put(process.env.REACT_APP_API_URL + "/me/songs/" + itemId);
                     if (res.data === "Song unliked") {
                         const updatedLikedSongs = await user.likedSongs.filter(id => {
                             return id !== itemId;
@@ -81,7 +81,7 @@ export default function LikeButton({ custom, type, itemId, playlist }) {
                         setMsg("Đã thêm bài hát vào thư viện");
                     }
                 } else if (type === "album") {
-                    await axios.put("/me/albums/" + itemId);
+                    await axios.put(process.env.REACT_APP_API_URL + "/me/albums/" + itemId);
                     if (liked) {
                         const updatedLikedAlbums = await user.albums.filter(id => {
                             return id !== itemId;
@@ -104,7 +104,7 @@ export default function LikeButton({ custom, type, itemId, playlist }) {
                         setMsg("Đã thêm album vào thư viện");
                     }
                 } else if (type === "playlist") {
-                    await axios.put("/me/playlists/" + itemId);
+                    await axios.put(process.env.REACT_APP_API_URL + "/me/playlists/" + itemId);
                     if (liked) {
                         const updatedLikedPlaylists = await user.playlists.filter(item => {
                             return item._id !== itemId;

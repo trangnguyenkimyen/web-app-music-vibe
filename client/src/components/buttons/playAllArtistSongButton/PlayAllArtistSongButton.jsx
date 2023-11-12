@@ -26,7 +26,7 @@ export default function PlayAllArtistSongsButton({ id }) {
                 });
             }
 
-            const res = await axios.get("/artists/" + id + "/top-songs?limit=10");
+            const res = await axios.get(process.env.REACT_APP_API_URL + "/artists/" + id + "/top-songs?limit=10");
             const data = res.data;
 
             const initialArray = await data?.map((song, index) => {

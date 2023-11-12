@@ -172,7 +172,7 @@ export default function More({ artists, album, songs, type, itemId, img, playlis
                 songs: songIds
             }
 
-            const res = await axios.post("/playlists", newPlaylist);
+            const res = await axios.post(process.env.REACT_APP_API_URL + "/playlists", newPlaylist);
 
             if (openSnackbar) {
                 setOpenSnackbar(false);
@@ -205,7 +205,7 @@ export default function More({ artists, album, songs, type, itemId, img, playlis
             const songIds = await songs.map(song => {
                 return song._id;
             });
-            await axios.post("/playlists/" + playlist._id + "/songs", {
+            await axios.post(process.env.REACT_APP_API_URL + "/playlists/" + playlist._id + "/songs", {
                 songIds: songIds
             });
             if (openSnackbar) {
@@ -277,7 +277,7 @@ export default function More({ artists, album, songs, type, itemId, img, playlis
                     setMsg("Đã thêm bài hát vào thư viện");
                 }
             } else if (type === "album") {
-                await axios.put("/me/albums/" + itemId);
+                await axios.put(process.env.REACT_APP_API_URL + "/me/albums/" + itemId);
                 if (liked) {
                     const updatedLikedAlbums = await user.albums.filter(id => {
                         return id !== itemId;
@@ -300,7 +300,7 @@ export default function More({ artists, album, songs, type, itemId, img, playlis
                     setMsg("Đã thêm album vào thư viện");
                 }
             } else if (type === "playlist") {
-                await axios.put("/me/playlists/" + itemId);
+                await axios.put(process.env.REACT_APP_API_URL + "/me/playlists/" + itemId);
                 if (liked) {
                     const updatedLikedPlaylists = await user.playlists.filter(item => {
                         return item._id !== itemId;

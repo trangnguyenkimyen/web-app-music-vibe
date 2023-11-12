@@ -43,7 +43,7 @@ export default function Login() {
         if (token) {
             const verifyEmailUrl = async () => {
                 try {
-                    await axios.get("/auth/verify/" + token);
+                    await axios.get(process.env.REACT_APP_API_URL + "/auth/verify/" + token);
                     setOpenSuccess(true);
                 } catch (error) {
                     console.log(error);
@@ -69,7 +69,7 @@ export default function Login() {
         const password = passLoginRef?.current?.value;
         dispatch({ type: "LOGIN_START" });
         try {
-            const res = await axios.post("/auth/login", {
+            const res = await axios.post(process.env.REACT_APP_API_URL + "/auth/login", {
                 email: email,
                 password: password
             });
@@ -97,7 +97,7 @@ export default function Login() {
         const password = passRegisterRef?.current?.value;
         try {
             setLoadingRegister(true);
-            await axios.post("/auth/register", {
+            await axios.post(process.env.REACT_APP_API_URL + "/auth/register", {
                 name: username,
                 email: email,
                 password: password,
@@ -125,7 +125,7 @@ export default function Login() {
         }
         try {
             setLoadingResetPass(true);
-            await axios.post("/auth/reset-password", {
+            await axios.post(process.env.REACT_APP_API_URL + "/auth/reset-password", {
                 email: email
             });
             setOpenSuccessReset(true);

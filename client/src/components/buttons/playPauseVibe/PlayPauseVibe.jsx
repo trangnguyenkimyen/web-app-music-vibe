@@ -30,17 +30,17 @@ export default function PlayPauseVibe({ item, type }) {
             let res = [];
             let data = [];
             if (type === "playlist") {
-                res = await axios.get("/playlists/find/" + item?._id);
+                res = await axios.get(process.env.REACT_APP_API_URL + "/playlists/find/" + item?._id);
                 data = res.data.songs;
             } else if (type === "album") {
-                res = await axios.get("/albums/find/" + item?._id);
+                res = await axios.get(process.env.REACT_APP_API_URL + "/albums/find/" + item?._id);
                 data = res.data.songs;
             } else if (type === "song") {
-                res = await axios.get("/songs/find/" + item?._id);
+                res = await axios.get(process.env.REACT_APP_API_URL + "/songs/find/" + item?._id);
                 data = [res.data];
             }
             else {
-                res = await axios.get("/artists/" + item?._id + "/top-songs?limit=10");
+                res = await axios.get(process.env.REACT_APP_API_URL + "/artists/" + item?._id + "/top-songs?limit=10");
                 data = res.data;
             }
 

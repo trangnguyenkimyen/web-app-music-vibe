@@ -10,7 +10,7 @@ export default function DeleteDialog({ openDialogDelete, setOpenDialogDelete, it
 
     const handleOnClickYes = async () => {
         try {
-            await axios.delete("/playlists/" + item?._id);
+            await axios.delete(process.env.REACT_APP_API_URL + "/playlists/" + item?._id);
             const updatedPlaylists = user.playlists.filter(playlist => {
                 return playlist._id !== item._id;
             });
