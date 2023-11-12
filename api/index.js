@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
 const cookie = require("cookie-parser");
+const cors = require("cors");
 
 // Config
 dotenv.config();
@@ -24,6 +25,8 @@ mongoose.connection.on("disconnected", () => {
 });
 
 const app = express();
+
+app.use(cors());
 
 // Cookie parser
 app.use(cookie());
