@@ -109,8 +109,8 @@ const login = async (req, res, next) => {
         res
             .cookie("access_token", token, {
                 httpOnly: true,
-                secure: false,
-                sameSite: 'strict',
+                secure: true,
+                sameSite: 'none',
                 path: '/',
                 domain: '.ddns.net',
                 expires: expiresDate,
