@@ -30,7 +30,7 @@ export default function FollowArtistButton({ id }) {
 
     const handleOnClick = async () => {
         if (user) {
-            await axios.put(process.env.REACT_APP_API_URL + "/me/following/" + id + "?type=artist");
+            await axios.put(process.env.REACT_APP_API_URL + "/me/following/" + id + "?type=artist", { withCredentials: true });
             if (user.followings.includes(id)) {
                 const updatedFollowings = await user.followings.filter(item => {
                     return item !== id;

@@ -47,7 +47,7 @@ export default function AddDialog({ setOpenDialogAdd, openDialogAdd }) {
                     desc: playlistDesc,
                     public: playlistType,
                     images: [url]
-                });
+                }, { withCredentials: true });
 
                 user.playlists.push({
                     name: playlistName,
@@ -68,7 +68,7 @@ export default function AddDialog({ setOpenDialogAdd, openDialogAdd }) {
                     desc: playlistDesc,
                     public: playlistType,
                     images: [currentFile]
-                }
+                }, { withCredentials: true }
                 );
 
                 user.playlists.push({

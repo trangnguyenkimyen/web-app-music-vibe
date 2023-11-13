@@ -50,7 +50,7 @@ export default function Navbar() {
     const handleOnClickLogout = async () => {
         handleClose();
         try {
-            await axios.get(process.env.REACT_APP_API_URL + "/users/logout");
+            await axios.get(process.env.REACT_APP_API_URL + "/users/logout", { withCredentials: true });
             dispatch({ type: "LOGOUT" });
             navigate("/login");
         } catch (error) {

@@ -172,7 +172,7 @@ export default function More({ artists, album, songs, type, itemId, img, playlis
                 songs: songIds
             }
 
-            const res = await axios.post(process.env.REACT_APP_API_URL + "/playlists", newPlaylist);
+            const res = await axios.post(process.env.REACT_APP_API_URL + "/playlists", newPlaylist, { withCredentials: true });
 
             if (openSnackbar) {
                 setOpenSnackbar(false);
@@ -207,7 +207,7 @@ export default function More({ artists, album, songs, type, itemId, img, playlis
             });
             await axios.post(process.env.REACT_APP_API_URL + "/playlists/" + playlist._id + "/songs", {
                 songIds: songIds
-            });
+            }, { withCredentials: true });
             if (openSnackbar) {
                 setOpenSnackbar(false);
             }
@@ -254,7 +254,7 @@ export default function More({ artists, album, songs, type, itemId, img, playlis
     const handleOnClickAddToLibrary = async () => {
         try {
             if (type === "song") {
-                const res = await axios.put("/me/songs/" + itemId);
+                const res = await axios.put("/me/songs/" + itemId, null, { withCredentials: true });
                 if (res.data === "Song unliked") {
                     const updatedLikedSongs = await user.likedSongs.filter(id => {
                         return id !== itemId;
@@ -277,7 +277,7 @@ export default function More({ artists, album, songs, type, itemId, img, playlis
                     setMsg("Đã thêm bài hát vào thư viện");
                 }
             } else if (type === "album") {
-                await axios.put(process.env.REACT_APP_API_URL + "/me/albums/" + itemId);
+                await axios.put(process.env.REACT_APP_API_URL + "/me/albums/" + itemId, null, { withCredentials: true });
                 if (liked) {
                     const updatedLikedAlbums = await user.albums.filter(id => {
                         return id !== itemId;
@@ -300,7 +300,7 @@ export default function More({ artists, album, songs, type, itemId, img, playlis
                     setMsg("Đã thêm album vào thư viện");
                 }
             } else if (type === "playlist") {
-                await axios.put(process.env.REACT_APP_API_URL + "/me/playlists/" + itemId);
+                await axios.put(process.env.REACT_APP_API_URL + "/me/playlists/" + itemId, null, { withCredentials: true });
                 if (liked) {
                     const updatedLikedPlaylists = await user.playlists.filter(item => {
                         return item._id !== itemId;

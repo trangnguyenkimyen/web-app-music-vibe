@@ -98,7 +98,7 @@ export default function AudioPlayer() {
                     const addCurrentlyPlayed = async () => {
                         await axios.put(process.env.REACT_APP_API_URL + "/me/currently-played/" + player?.currentSong?.itemId, {
                             itemModel: itemModel
-                        });
+                        }, { withCredentials: true });
                     };
                     addCurrentlyPlayed();
                 } catch (error) {

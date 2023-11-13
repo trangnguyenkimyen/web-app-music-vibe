@@ -47,7 +47,7 @@ export default function EditDialog({ setOpenDialogEdit, openDialogEdit, item }) 
                     desc: playlistDesc,
                     public: playlistType,
                     images: [url]
-                });
+                }, { withCredentials: true });
 
                 const updatedPlaylists = user.playlists.map(playlist => {
                     if (playlist._id === item?._id) {
@@ -74,7 +74,7 @@ export default function EditDialog({ setOpenDialogEdit, openDialogEdit, item }) 
                     desc: playlistDesc,
                     public: playlistType,
                     images: [currentFile]
-                }
+                }, { withCredentials: true }
                 );
 
                 const updatedPlaylists = user.playlists.map(playlist => {

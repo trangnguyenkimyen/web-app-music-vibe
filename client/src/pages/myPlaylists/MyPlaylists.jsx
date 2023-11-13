@@ -15,7 +15,7 @@ export default function MyPlaylists() {
     useEffect(() => {
         if (user) {
             const fetchData = async () => {
-                const res = await axios.get(process.env.REACT_APP_API_URL + "/me/playlists");
+                const res = await axios.get(process.env.REACT_APP_API_URL + "/me/playlists", { withCredentials: true });
                 setData(res.data);
                 setLoading(false);
             };
