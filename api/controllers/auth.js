@@ -109,11 +109,10 @@ const login = async (req, res, next) => {
         res
             .cookie("access_token", token, {
                 httpOnly: true,
-                secure: false,
-                sameSite: 'strict',
+                secure: true,
+                sameSite: 'none',
                 path: '/',
                 expires: expiresDate,
-                domain: '.ddns.net'
             })
             .status(200)
             .json({ ...others });
