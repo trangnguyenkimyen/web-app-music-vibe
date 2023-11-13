@@ -72,7 +72,7 @@ export default function Login() {
             const res = await axios.post(process.env.REACT_APP_API_URL + "/auth/login", {
                 email: email,
                 password: password
-            });
+            }, { withCredentials: true });
             dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
             navigate("/");
         } catch (error) {
