@@ -112,7 +112,6 @@ const login = async (req, res, next) => {
                 secure: true,
                 sameSite: 'none',
                 path: '/',
-                domain: '.ddns.net',
                 expires: expiresDate,
             })
             .status(200)

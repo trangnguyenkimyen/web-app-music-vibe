@@ -10,7 +10,7 @@ const useFetch = (url) => {
         const fetchData = async () => {
             setLoading(true);
             try {
-                const res = await axios.get(process.env.REACT_APP_API_URL + url);
+                const res = await axios.get(process.env.REACT_APP_API_URL + url, { withCredentials: true });
                 setData(res.data);
             } catch (err) {
                 setError(err);
