@@ -412,7 +412,7 @@ export default function More({ artists, album, songs, type, itemId, img, playlis
                                         ?
                                         <Link
                                             to={`/artists/${artists[0]?._id}`}
-                                            state={{ name: artists[0]?.name }}
+                                            state={{ title: artists[0]?.name }}
                                         >
                                             <MenuItem
                                                 className="list-item artist"
@@ -486,7 +486,7 @@ export default function More({ artists, album, songs, type, itemId, img, playlis
                                         <Link
                                             key={artist?._id}
                                             to={`/artists/${artist?._id}`}
-                                            state={{ name: artist?.name }}
+                                            state={{ title: artist?.name }}
                                         >
                                             <MenuItem onClick={() => setOpenMenu(false)} className="artist-item" >
                                                 {artist?.name}

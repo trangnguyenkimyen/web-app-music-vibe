@@ -11,6 +11,7 @@ import { AudioPlayerContext } from "../../context/AudioPlayerContext";
 export default function Card({ type, mixImg, item }) {
     const { currentQueue } = useContext(QueueContext);
     const { player } = useContext(AudioPlayerContext);
+    const isTouchDevice = window.matchMedia("(pointer: coarse)").matches;
 
     const handleMouseMove = (e) => {
         const card = e.target;
@@ -36,12 +37,12 @@ export default function Card({ type, mixImg, item }) {
         <div className="wrapper-item">
             <div className="item">
                 <Link
-                    to={`/${type === "song" ? "album" : type}s/${type !== "song" ? item?._id : (item?.album[0]?._id || item?.album?._id)} `}
+                    to={`/${type === "song" ? "album" : type === "profile" ? "user" : type}s/${type !== "song" ? item?._id : (item?.album[0]?._id || item?.album?._id)} `}
                     state={{ title: item?.name }}
                 >
                     <div className={`card ${type}`} onMouseMove={handleMouseMove}>
                         <div className="inner">
-                            {type !== "profile" &&
+                            {type !== "profile" && !isTouchDevice &&
                                 <div className={`card-button ${player?.currentSong?.itemId === item?._id && currentQueue?.isPlayed && "played"}`} >
                                     <PlayPauseVibe item={item} type={type} />
                                 </div>

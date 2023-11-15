@@ -14,7 +14,7 @@ router.put("/reset-pass/:email", resetPassword);
 router.delete("/:id", [validObjectId, verifyUser], deleteUser);
 
 // Get a user by id
-router.get("/find/:id", [validObjectId, verifyToken], getUser);
+router.get("/find/:id", validObjectId, getUser);
 // Get a user by email
 router.get("/exist/:email", existUser);
 // Get all users

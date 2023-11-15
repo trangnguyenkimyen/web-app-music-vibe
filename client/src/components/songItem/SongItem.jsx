@@ -118,7 +118,7 @@ export default function SongItem({ song }) {
                                         :
                                         <Link
                                             to={`/artists/${artist._id}`}
-                                            state={{ name: artist.name }}
+                                            state={{ title: artist.name }}
                                         >
                                             {artist.name}
                                         </Link>

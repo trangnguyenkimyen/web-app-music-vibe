@@ -23,7 +23,6 @@ import LikeButton from "../buttons/likeButton/LikeButton";
 import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
 import PauseCircleFilledIcon from '@mui/icons-material/PauseCircleFilled';
 import axios from "axios";
-import CustomSnackbar from "../customSnackbar/CustomSnackbar";
 import LoginPopover from "../loginPopover/LoginPopover";
 
 export default function AudioPlayer() {
@@ -593,7 +592,7 @@ export default function AudioPlayer() {
                                                     <Link
                                                         to={`/artists/${artist._id}`}
                                                         state={{
-                                                            name: artist.name
+                                                            title: artist.name
                                                         }}
                                                     >
                                                         {artist.name}

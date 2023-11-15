@@ -114,9 +114,14 @@ export default function Navbar() {
                                                 <MenuList
                                                     onKeyDown={handleListKeyDown}
                                                 >
-                                                    <MenuItem onClick={handleClose} className="list-item">
-                                                        Profile
-                                                    </MenuItem>
+                                                    <Link
+                                                        to={`/users/${user?._id}`}
+                                                        state={{ title: user?.name }}
+                                                    >
+                                                        <MenuItem onClick={handleClose} className="list-item">
+                                                            Profile
+                                                        </MenuItem>
+                                                    </Link>
                                                     <MenuItem onClick={handleClose} className="list-item">
                                                         Tài khoản của tôi
                                                     </MenuItem>

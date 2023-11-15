@@ -168,7 +168,10 @@ export default function Playlist() {
                             {loading
                                 ? <Skeleton variant="text" className="skeleton" width={100} />
                                 :
-                                <Link to={`/user/${data?.owner?._id}`} >
+                                <Link
+                                    to={`/users/${data?.owner?._id}`}
+                                    state={{ title: data?.owner?.name }}
+                                >
                                     <p className="owner-name">
                                         {data?.owner?.isAdmin ? "vibe" : data?.owner?.name}
                                     </p>

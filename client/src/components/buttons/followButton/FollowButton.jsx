@@ -1,4 +1,4 @@
-import "./followArtistButton.scss";
+import "./followButton.scss";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useContext, useEffect, useRef, useState } from "react";
@@ -8,7 +8,7 @@ import LoginPopover from "../../loginPopover/LoginPopover";
 import axios from "axios";
 import CustomSnackbar from "../../customSnackbar/CustomSnackbar";
 
-export default function FollowArtistButton({ id }) {
+export default function FollowButton({ id, type }) {
     const [followed, setFollowed] = useState(false);
     const { user, dispatch } = useContext(AuthContext);
     const [open, setOpen] = useState(false);
@@ -30,7 +30,7 @@ export default function FollowArtistButton({ id }) {
 
     const handleOnClick = async () => {
         if (user) {
-            await axios.put(process.env.REACT_APP_API_URL + "/me/following/" + id + "?type=artist", { withCredentials: true });
+            await axios.put(process.env.REACT_APP_API_URL + "/me/following/" + id + "?type=" + type, null, { withCredentials: true });
             if (user.followings.includes(id)) {
                 const updatedFollowings = await user.followings.filter(item => {
                     return item !== id;
@@ -41,7 +41,11 @@ export default function FollowArtistButton({ id }) {
                         followings: updatedFollowings
                     }
                 });
-                setMsg("Đã ngưng theo dõi nghệ sĩ");
+                if (type === "artist") {
+                    setMsg("Đã ngưng theo dõi nghệ sĩ");
+                } else {
+                    setMsg("Đã ngưng theo dõi người dùng");
+                }
             } else {
                 await user.followings.push(id);
                 await dispatch({
@@ -50,7 +54,11 @@ export default function FollowArtistButton({ id }) {
                         followings: user.followings
                     }
                 });
-                setMsg("Đã theo dõi nghệ sĩ");
+                if (type === "artist") {
+                    setMsg("Đã theo dõi nghệ sĩ");
+                } else {
+                    setMsg("Đã theo dõi người dùng");
+                }
             }
 
             if (openSnackbar) {
@@ -77,8 +85,12 @@ export default function FollowArtistButton({ id }) {
                 open={open}
                 anchorEl={anchorRef?.current}
                 setOpen={setOpen}
-                title="Theo dõi nghệ sĩ"
-                content="Hãy đăng nhập để theo dõi nghệ sĩ bạn yêu thích nhé."
+                title={type === "artist"
+                    ? "Theo dõi nghệ sĩ"
+                    : "Theo dõi người dùng"}
+                content={type === "artist"
+                    ? "Hãy đăng nhập để theo dõi nghệ sĩ bạn yêu thích nhé."
+                    : "Hãy đăng nhập để kết nối những người cùng vibe với bạn."}
             />
             <CustomSnackbar
                 openSnackbar={openSnackbar}

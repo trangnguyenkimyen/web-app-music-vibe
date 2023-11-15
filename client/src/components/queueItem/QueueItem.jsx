@@ -154,7 +154,7 @@ export default function QueueItem({ played, item, number, user }) {
                                         :
                                         <Link
                                             to={`/artists/${artist._id}`}
-                                            state={{ name: artist.name }}
+                                            state={{ title: artist.name }}
                                         >
                                             {artist.name}
                                         </Link>

@@ -8,8 +8,42 @@ const Artist = require("../models/Artist");
 // @route   GET api/users/find/:id
 const getUser = async (req, res, next) => {
     try {
-        const user = await User.findById(req.params.id);
-        const { password, isAdmin, __v, ...others } = user._doc;
+        let user = await User
+            .findById(req.params.id)
+            .populate({
+                path: "playlists",
+                match: { public: true },
+            });
+
+        const followings = await Promise.all(
+            user.followings.map(async (f) => {
+                const user = await User
+                    .findById(f)
+                    .select("name img isAdmin type");
+                if (user) {
+                    return user;
+                } else {
+                    let artist = await Artist
+                        .findById(f)
+                        .select("name images type");
+                    return artist;
+                }
+            })
+        )
+
+        const followers = await User
+            .find({
+                _id: { $in: user.followers }
+            })
+            .select("name img isAdmin type");
+
+        user._doc = {
+            ...user._doc,
+            followings: followings,
+            followers: followers
+        };
+
+        const { password, likedSongs, albums, currentlyPlaying, provider, __v, ...others } = user._doc;
         res.status(200).json({ ...others });
     } catch (err) {
         next(err);
@@ -117,27 +151,6 @@ const resetPassword = async (req, res, next) => {
 // @route   DELETE api/users/:id
 const deleteUser = async (req, res, next) => {
     try {
-        const user = await User.findById(req.params.id);
-
-        await Promise.all(
-            user.playlists.map(playlistId => {
-                // Delete playlists of user
-                Playlist.findByIdAndDelete(playlistId);
-                // Remove follow
-                Playlist.findByIdAndUpdate(playlistId, {
-                    $pull: { followers: user._id }
-                });
-            })
-        );
-
-        // Unfollow another users, artists
-        await Promise.all(
-            user.followings.map(following => {
-                User.findByIdAndUpdate(following, { $pull: { followers: user._id } });
-                Artist.findByIdAndUpdate(following, { $pull: { followers: user._id } });
-            })
-        );
-
         await User.findByIdAndDelete(req.params.id);
 
         res.status(200).json("User has been deleted");
@@ -153,15 +166,14 @@ const getPlaylists = async (req, res, next) => {
         const limit = req.query.limit || 20;
         const offset = req.query.offset || 0;
 
-        const playlists = await User
+        const user = await User
             .findById(req.params.id)
             .populate({
                 path: "playlists",
                 match: { public: true },
-            })
-            .skip(offset)
-            .limit(limit);
-        res.status(200).json(playlists);
+                options: { skip: offset, limit: limit }
+            });
+        res.status(200).json(user.playlists);
 
     } catch (err) {
         next(err);

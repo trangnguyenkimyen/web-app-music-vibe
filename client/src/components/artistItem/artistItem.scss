@@ -23,10 +23,11 @@
         .artist-name {
             font-weight: 700;
             font-size: 34px;
-            cursor: pointer;
 
-            &:hover {
-                text-decoration: underline;
+            a {
+                &:hover {
+                    text-decoration: underline;
+                }
             }
         }
 

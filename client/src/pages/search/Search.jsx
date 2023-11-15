@@ -27,8 +27,8 @@ export default function Search() {
         let limit = 0;
         setAdditionalSongs([]);
         if (initialData?.songs?.length < 5) {
-            setAdditionalSongsLoading(true);
             const loadAdditionalSongs = async () => {
+                setAdditionalSongsLoading(true);
                 const fetchData = async (url) => {
                     const res = await axios.get(process.env.REACT_APP_API_URL + url);
                     if (res.data.length > 0) {
@@ -73,13 +73,12 @@ export default function Search() {
                         }
                     }
                     setAdditionalSongs(temp);
-                    setAdditionalSongsLoading(false);
                 } else if (initialData?.playlists?.length > 0) {
                     const id = initialData?.playlists[0]?._id;
                     const temp = await fetchData("/playlists/" + id + "/songs?limit=" + limit);
                     setAdditionalSongs(temp);
-                    setAdditionalSongsLoading(false);
                 }
+                setAdditionalSongsLoading(false);
             }
             loadAdditionalSongs();
         } else {
@@ -315,119 +314,121 @@ export default function Search() {
                                 <div className="results">
                                     {selectedChip === "0" &&
                                         <>
-                                            <section className="first">
-                                                <div className="results-first-left">
-                                                    <h3 className="title">Kết quả hàng đầu</h3>
-                                                    <Link to={link}>
-                                                        <div className={`top-result-box ${initialData?.artists?.length > 0 && "artist"}`}>
-                                                            <div className="wrapper-img">
-                                                                <img
-                                                                    src={imgSrc}
-                                                                    alt="Hình ảnh"
-                                                                />
-                                                            </div>
-                                                            <div className="content">
-                                                                <p className="name">
-                                                                    {initialData?.artists?.length > 0
-                                                                        ? initialData.artists[0].name
-                                                                        : initialData?.albums?.length > 0
-                                                                            ? initialData.albums[0].name
-                                                                            : initialData?.playlists?.length > 0
-                                                                                ? initialData.playlists[0].name
-                                                                                : initialData?.songs?.length > 0
-                                                                                && initialData.songs[0].name
-                                                                    }
-                                                                </p>
-                                                                {initialData?.artists?.length === 0 &&
-                                                                    <>
-                                                                        {initialData?.albums?.length > 0
-                                                                            ?
-                                                                            <div className="artists">
-                                                                                {initialData?.albums[0]?.artists?.map((artist, index) => (
-                                                                                    <React.Fragment key={artist._id}>
-                                                                                        <span>
-                                                                                            {isTouchDevice
-                                                                                                ? artist.name
-                                                                                                :
-                                                                                                <Link to={`/artists/${artist._id}`}>
-                                                                                                    {artist.name}
-                                                                                                </Link>
-                                                                                            }
-                                                                                        </span>
-                                                                                        {index < initialData.albums[0].artists.length - 1 &&
-                                                                                            <span className="comma">, </span>
-                                                                                        }
-                                                                                    </React.Fragment>
-                                                                                ))}
-                                                                            </div>
-                                                                            : initialData?.playlists?.length > 0
-                                                                                ? <div className="desc">
-                                                                                    {initialData.playlists[0].desc}
-                                                                                </div>
-                                                                                : <div className="artists">
-                                                                                    <div className="artists">
-                                                                                        {initialData?.songs[0]?.artists?.map((artist, index) => (
-                                                                                            <React.Fragment key={artist._id}>
-                                                                                                <span>
-                                                                                                    {isTouchDevice
-                                                                                                        ? artist.name
-                                                                                                        :
-                                                                                                        <Link to={`/artists/${artist._id}`}>
-                                                                                                            {artist.name}
-                                                                                                        </Link>
-                                                                                                    }
-                                                                                                </span>
-                                                                                                {index < initialData.songs[0].artists.length - 1 &&
-                                                                                                    <span className="comma">, </span>
-                                                                                                }
-                                                                                            </React.Fragment>
-                                                                                        ))}
-                                                                                    </div>
-                                                                                </div>
+                                            {(initialData?.artists?.length > 0 || initialData?.albums?.length > 0 || initialData?.playlists?.length > 0) &&
+                                                <section className="first">
+                                                    <div className="results-first-left">
+                                                        <h3 className="title">Kết quả hàng đầu</h3>
+                                                        <Link to={link}>
+                                                            <div className={`top-result-box ${initialData?.artists?.length > 0 && "artist"}`}>
+                                                                <div className="wrapper-img">
+                                                                    <img
+                                                                        src={imgSrc}
+                                                                        alt="Hình ảnh"
+                                                                    />
+                                                                </div>
+                                                                <div className="content">
+                                                                    <p className="name">
+                                                                        {initialData?.artists?.length > 0
+                                                                            ? initialData.artists[0].name
+                                                                            : initialData?.albums?.length > 0
+                                                                                ? initialData.albums[0].name
+                                                                                : initialData?.playlists?.length > 0
+                                                                                    ? initialData.playlists[0].name
+                                                                                    : initialData?.songs?.length > 0
+                                                                                    && initialData.songs[0].name
                                                                         }
-                                                                    </>}
+                                                                    </p>
+                                                                    {initialData?.artists?.length === 0 &&
+                                                                        <>
+                                                                            {initialData?.albums?.length > 0
+                                                                                ?
+                                                                                <div className="artists">
+                                                                                    {initialData?.albums[0]?.artists?.map((artist, index) => (
+                                                                                        <React.Fragment key={artist._id}>
+                                                                                            <span>
+                                                                                                {isTouchDevice
+                                                                                                    ? artist.name
+                                                                                                    :
+                                                                                                    <Link to={`/artists/${artist._id}`}>
+                                                                                                        {artist.name}
+                                                                                                    </Link>
+                                                                                                }
+                                                                                            </span>
+                                                                                            {index < initialData.albums[0].artists.length - 1 &&
+                                                                                                <span className="comma">, </span>
+                                                                                            }
+                                                                                        </React.Fragment>
+                                                                                    ))}
+                                                                                </div>
+                                                                                : initialData?.playlists?.length > 0
+                                                                                    ? <div className="desc">
+                                                                                        {initialData.playlists[0].desc}
+                                                                                    </div>
+                                                                                    : <div className="artists">
+                                                                                        <div className="artists">
+                                                                                            {initialData?.songs[0]?.artists?.map((artist, index) => (
+                                                                                                <React.Fragment key={artist._id}>
+                                                                                                    <span>
+                                                                                                        {isTouchDevice
+                                                                                                            ? artist.name
+                                                                                                            :
+                                                                                                            <Link to={`/artists/${artist._id}`}>
+                                                                                                                {artist.name}
+                                                                                                            </Link>
+                                                                                                        }
+                                                                                                    </span>
+                                                                                                    {index < initialData.songs[0].artists.length - 1 &&
+                                                                                                        <span className="comma">, </span>
+                                                                                                    }
+                                                                                                </React.Fragment>
+                                                                                            ))}
+                                                                                        </div>
+                                                                                    </div>
+                                                                            }
+                                                                        </>}
+                                                                </div>
+                                                                <div className="button" onClick={(e) => e.preventDefault()}>
+                                                                    {initialData?.artists?.length > 0
+                                                                        ? <PlayAllArtistSongsButton id={initialData?.artists[0]?._id} />
+                                                                        : <PlayPauseVibe item={item} type={typeItem} />
+                                                                    }
+                                                                </div>
                                                             </div>
-                                                            <div className="button" onClick={(e) => e.preventDefault()}>
-                                                                {initialData?.artists?.length > 0
-                                                                    ? <PlayAllArtistSongsButton id={initialData?.artists[0]?._id} />
-                                                                    : <PlayPauseVibe item={item} type={typeItem} />
-                                                                }
-                                                            </div>
-                                                        </div>
-                                                    </Link>
-                                                </div>
-                                                <div className="results-first-right">
-                                                    <h3 className="title">Các bài hát</h3>
-                                                    <div className={`songs ${initialDataLoading || additionalSongsLoading}`}>
-                                                        {additionalSongsLoading
-                                                            ? <>
-                                                                {[...Array(5)].map((_, index) => (
-                                                                    <Skeleton key={index} variant="rounded" className="song-item skeleton" />
-                                                                ))}
-                                                            </>
-                                                            : initialData?.songs?.length >= 5
+                                                        </Link>
+                                                    </div>
+                                                    <div className="results-first-right">
+                                                        <h3 className="title">Các bài hát</h3>
+                                                        <div className={`songs ${initialDataLoading || additionalSongsLoading}`}>
+                                                            {additionalSongsLoading
                                                                 ? <>
-                                                                    {initialData.songs.map((song) => (
-                                                                        <SongItem key={song._id} song={song} />
+                                                                    {[...Array(5)].map((_, index) => (
+                                                                        <Skeleton key={index} variant="rounded" className="song-item skeleton" />
                                                                     ))}
                                                                 </>
-                                                                : additionalSongs?.length > 0
+                                                                : initialData?.songs?.length >= 5
                                                                     ? <>
-                                                                        {initialData?.songs?.map((song) => (
+                                                                        {initialData.songs.map((song) => (
                                                                             <SongItem key={song._id} song={song} />
                                                                         ))}
-                                                                        {additionalSongs?.length > 0 && additionalSongs?.map((song => (
-                                                                            <SongItem key={song._id} song={song} />
-                                                                        )))}
                                                                     </>
-                                                                    : <>
-                                                                        {initialData?.songs?.map((song) => (
-                                                                            <SongItem key={song._id} song={song} />
-                                                                        ))}
-                                                                    </>}
+                                                                    : additionalSongs?.length > 0
+                                                                        ? <>
+                                                                            {initialData?.songs?.map((song) => (
+                                                                                <SongItem key={song._id} song={song} />
+                                                                            ))}
+                                                                            {additionalSongs?.length > 0 && additionalSongs?.map((song => (
+                                                                                <SongItem key={song._id} song={song} />
+                                                                            )))}
+                                                                        </>
+                                                                        : <>
+                                                                            {initialData?.songs?.map((song) => (
+                                                                                <SongItem key={song._id} song={song} />
+                                                                            ))}
+                                                                        </>}
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </section>
+                                                </section>
+                                            }
                                             {initialData?.albums?.length > 0 &&
                                                 <section className="albums">
                                                     <h3 className="title">Albums</h3>

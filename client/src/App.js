@@ -23,6 +23,7 @@ import ScrollToTop from "./components/scrollToTop/ScrollToTop";
 import { AuthContext } from "./context/AuthContext";
 import Search from "./pages/search/Search";
 import ResetPass from "./pages/resetPass/ResetPass";
+import User from "./pages/user/User";
 
 function App() {
   const { user } = useContext(AuthContext);
@@ -68,6 +69,7 @@ function App() {
               <Route path="/library" element={user ? <Library /> : <Login />} />
               <Route path="/recent-listen" element={user ? <RecentListen /> : <Login />} />
               <Route path="/statistic" element={user ? <Statistic /> : <Login />} />
+              <Route path="/users/:id" element={<User />} />
             </Routes>
           </div>
           <AudioPlayer />

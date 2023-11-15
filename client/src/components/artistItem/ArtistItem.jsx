@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import FollowArtistButton from "../buttons/followArtistButton/FollowArtistButton";
+import FollowButton from "../buttons/followButton/FollowButton";
 import PlayAllArtistSongButton from "../buttons/playAllArtistSongButton/PlayAllArtistSongButton";
 import "./artistItem.scss";
 import { useEffect, useState } from "react";
@@ -22,7 +22,10 @@ export default function ArtistItem({ artist }) {
             </div>
             <div className="artist-info">
                 <div className="artist-name">
-                    <Link to={`/artists/${artist._id}`}>
+                    <Link
+                        to={`/artists/${artist._id}`}
+                        state={{ title: artist.name }}
+                    >
                         {artist.name}
                     </Link>
                 </div>
@@ -31,7 +34,7 @@ export default function ArtistItem({ artist }) {
                 </div>
             </div>
             <PlayAllArtistSongButton id={artist._id} />
-            <FollowArtistButton id={artist._id} />
+            <FollowButton id={artist._id} type="artist" />
         </div>
     )
 }

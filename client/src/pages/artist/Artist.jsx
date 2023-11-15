@@ -7,7 +7,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useEffect, useState } from "react";
 import { ColorExtractor } from "react-color-extractor";
 import PlayAllArtistSongsButton from "../../components/buttons/playAllArtistSongButton/PlayAllArtistSongButton";
-import FollowArtistButton from "../../components/buttons/followArtistButton/FollowArtistButton";
+import FollowButton from "../../components/buttons/followButton/FollowButton";
 import SongTable from "../../components/songTable/SongTable";
 import { Box, Chip, Grow, Modal, Skeleton, Tab } from "@mui/material";
 import { TabPanel, TabContext, TabList } from "@mui/lab";
@@ -27,7 +27,7 @@ export default function Artist() {
     const [imgSrc, setImgSrc] = useState("");
 
     const location = useLocation();
-    const name = location.state?.name;
+    const title = location.state?.title;
     const params = useParams();
     const artistId = params.id;
     const { data: artistData, loading: artistLoading } = useFetch("/artists/find/" + artistId);
@@ -62,8 +62,8 @@ export default function Artist() {
 
     useEffect(() => {
         setValueTab("0");
-        document.title = (name ? name : artistData?.name ? artistData.name : "Name") + " - Artist";
-    }, [name, artistData]);
+        document.title = (title ? title : artistData?.name ? artistData.name : "Name") + " - Artist";
+    }, [title, artistData]);
 
     // const handleTabChange = (e, value) => {
     //     setValueTab(value);
@@ -138,7 +138,7 @@ export default function Artist() {
                         </div>
                         <div className="right">
                             <PlayAllArtistSongsButton id={artistData?._id} />
-                            <FollowArtistButton id={artistData?._id} />
+                            <FollowButton id={artistData?._id} type="artist" />
                         </div>
                     </div>
                 </div>
