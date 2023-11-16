@@ -87,7 +87,7 @@ const searchForItems = async (req, res, next) => {
                 .find({
                     name: { $regex: '.*' + q + '.*', $options: 'i' }
                 })
-                .select("name img")
+                .select("name img isAdmin")
                 .skip(offset)
                 .limit(limit);
         }

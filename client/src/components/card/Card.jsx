@@ -1,6 +1,7 @@
 import "./card.scss";
 import img from "../../images/song/forgetmenow.jpg";
 import noAvatar from "../../images/noAvatar.png";
+import adminImg from "../../images/defaultAvatar.png";
 import { Link } from "react-router-dom";
 import { Skeleton } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
@@ -73,7 +74,7 @@ export default function Card({ type, mixImg, item }) {
                                             : type === "artist"
                                                 ? <img src={artistImg} alt={item.name} />
                                                 : type === "profile"
-                                                    ? <img src={item.img || noAvatar} alt={item.name} />
+                                                    ? <img src={item.isAdmin ? adminImg : (item.img || noAvatar)} alt={item.isAdmin ? "vibe" : item.name} />
                                                     : type === "song"
                                                         ? <img src={!item.album[0] ? item.album.images[0] : item.album[0].images[0]} alt={item.name} />
                                                         : <img src={item.images[0]} alt={item.name} />
@@ -85,7 +86,7 @@ export default function Card({ type, mixImg, item }) {
                                     {!item
                                         ? <Skeleton variant="rounded" className="skeleton" />
                                         : <>
-                                            <h4 className="name">{item.name}</h4>
+                                            <h4 className="name">{type === "profile" ? (item.isAdmin ? "vibe" : item.name) : item.name}</h4>
                                             <div className="content">
                                                 <p>
                                                     {type === "playlist"
