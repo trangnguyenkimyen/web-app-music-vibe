@@ -79,7 +79,7 @@ export default function SongRow({ type, number, song, createdAt }) {
                 res = await axios.get(process.env.REACT_APP_API_URL + "/albums/find/" + itemId);
                 data = res.data.songs;
             } else if (type === "library") {
-                res = await axios.get(process.env.REACT_APP_API_URL + "/me/liked-songs");
+                res = await axios.get(process.env.REACT_APP_API_URL + "/me/liked-songs", { withCredentials: true });
                 data = res.data;
             }
             else {
