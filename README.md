@@ -3,7 +3,7 @@
 </h1>
 <p>
   Vibe is a responsive web application for listening to music.  It uses HTML, CSS, SCSS, JavaScript, React, NodeJS, and MongoDB to create a user-friendly and interactive interface. To experience Vibe for yourself, you can visit <a href="https://web-app-music-vibe.vercel.app/">web-app-music-vibe.vercel.app</a> and check out its features.
-  <blockquote>It can take up to 2 minutes for the page to load</blockquote>
+  <blockquote>It can take up to 2 minutes for the first load</blockquote>
 </p>
 <br>
 <hr></hr>
@@ -19,7 +19,7 @@
 </ul>
 <h2>Technologies and libraries used:</h2>
 <ul>
-  <li><b>JWT</b> for authentication and authorization of users.</li>
+  <li><b>JWT</b> for authorization of users.</li>
   <li><b>NodeMailer</b> for sending verification and password reset emails to users.</li>
   <li><b>MUI</b> for building a user-friendly interface.</li>
 </ul>
